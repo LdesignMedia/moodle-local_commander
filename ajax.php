@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Language EN
+ * Output the possible menu options
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -23,10 +23,24 @@
  * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
-defined('MOODLE_INTERNAL') || die();
-$string['pluginname'] = 'Commander';
 
-// JS.
-$string['js:header'] = 'Commander - speed up your Moodling';
-$string['js:command_placeholder'] = 'Search your for your command..';
-$string['js:error_parsing'] = 'Error parsing';
+define('AJAX_SCRIPT', true);
+require_once(__DIR__ . '/../../config.php');
+
+$courseid = optional_param('courseid', 0, PARAM_INT);
+
+// This should be accessed by only valid logged in user.
+require_login(null, false);
+
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url('/local/commander/ajax.php');
+
+if($courseid > 0){
+    $course = $DB->get_record('course', ['id' => $courseid] , '*' , MUST_EXIST);
+    $PAGE->set_course($course);
+}
+
+$navigation = new \local_commander\navigation($PAGE , $courseid);
+echo  $navigation->get_menu_for_js();
+
+ajax_check_captured_output();

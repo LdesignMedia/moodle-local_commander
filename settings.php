@@ -32,12 +32,12 @@ if ($hassiteconfig) {
     $settings = new admin_settingpage('local_commander',
         new lang_string('pluginname', 'local_commander'));
 
-    // ` Just press ` (above the tab key) to bring up the interface, and then start typing part of the name of any screen,
-    // post, page, etc. As you type, you’ll be shown a list of matching links.
+    // Just press ` (above the tab key) to bring up the commander
     // Use the Up and Down keys to move between them, and press Enter to open one.
+
     $settings->add(new admin_setting_configtext('local_commander/key1',
         new lang_string('setting:key1', 'local_commander'),  new lang_string('setting:key1_desc', 'local_commander'),
-        '`', PARAM_RAW));
+        192, PARAM_INT));
 
     $ADMIN->add('localplugins', $settings);
 }

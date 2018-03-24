@@ -34,11 +34,22 @@ defined('MOODLE_INTERNAL') || die;
  * https://docs.moodle.org/dev/Local_plugins
  *
  * @param global_navigation $navigation
+ *
+ * @throws coding_exception
  */
 function local_commander_extend_navigation(global_navigation  $navigation) {
-    global $CFG, $PAGE;
+    global $COURSE, $PAGE;
 
     // TODO Only add this if you have enough permissions.
+    $PAGE->requires->jquery();
+    $PAGE->requires->css('/local/commander/styles.css');
+    $arguments = [
+        'courseid' => $COURSE->id,
+    ];
 
+    $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);
+
+    // @TODO using mustache template instead.
+    $PAGE->requires->strings_for_js(['js:header' , 'js:error_parsing','js:command_placeholder'], 'local_commander');
 
 }
