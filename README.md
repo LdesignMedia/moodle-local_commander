@@ -1,6 +1,8 @@
 Moodle - local commander plugin
 ====================
-Allow using a shortcut to execute manager tasks from a easy helper popup.
+Commander is a command dialog inspired by PhpStorm `Action` and `oh-my-zsh`. It will make navigation faster in Moodle. 
+
+The plugin will list all navigation items in a list. This list is searchable. You can use the arrow keys for navigation.
 
 Author
 ====================
@@ -12,7 +14,8 @@ Author
 
 Description
 ====================
-@todo
+
+Just press ` (above the TAB key) to bring up the **commander**. Use the UP and DOWN keys to move between them, and press Enter to open one.
 
 List of features
 ====================
