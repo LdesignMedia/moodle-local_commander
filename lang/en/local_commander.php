@@ -26,8 +26,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Commander';
+$string['commander:display'] = 'Local commander';
 
 // JS.
 $string['js:header'] = 'Commander - speed up your Moodling';
 $string['js:command_placeholder'] = 'Search your for your command..';
 $string['js:error_parsing'] = 'Error parsing';
+
+// Settings.
+$string['setting:key1'] = 'The shortcut key';
+$string['setting:key1_desc'] = 'The default keyboard shortcut is the <b>`</b> (above the TAB).';

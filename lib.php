@@ -36,20 +36,28 @@ defined('MOODLE_INTERNAL') || die;
  * @param global_navigation $navigation
  *
  * @throws coding_exception
+ * @throws dml_exception
  */
 function local_commander_extend_navigation(global_navigation $navigation) {
     global $COURSE, $PAGE;
 
-    // TODO Only add this if you have enough permissions.
+    if (!has_capability('local/commander:display', context_system::instance())) {
+        return;
+    }
+
     $PAGE->requires->jquery();
     $PAGE->requires->css('/local/commander/styles.css');
     $arguments = [
         'courseid' => $COURSE->id,
+        'key' => get_config('local_commander' , 'key1')
     ];
 
     $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);
 
     // @TODO Using mustache template instead.
-    $PAGE->requires->strings_for_js(['js:header', 'js:error_parsing', 'js:command_placeholder'], 'local_commander');
-
+    $PAGE->requires->strings_for_js([
+        'js:header',
+        'js:error_parsing',
+        'js:command_placeholder',
+    ], 'local_commander');
 }
