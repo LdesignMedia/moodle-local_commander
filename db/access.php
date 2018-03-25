@@ -15,22 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * 
+ * Capabilities
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package local_commander
+ * @package   local_commander
  * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-    'local/commander:display' => array(
+$capabilities = [
+    'local/commander:display' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW
-        ),
-    ),
-);
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];

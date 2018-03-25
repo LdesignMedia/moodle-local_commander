@@ -109,15 +109,15 @@ class navigation extends settings_navigation_ajax {
             return '';
         }
 
-        $attributes = array();
+        $attributes = [];
         $attributes['id'] = $child->id;
         $attributes['name'] = (string)$child->text; // This can be lang_string object so typecast it.
 
         if (is_string($child->action)) {
             $attributes['link'] = $child->action;
-        } elseif ($child->action instanceof moodle_url) {
+        } else if ($child->action instanceof moodle_url) {
             $attributes['link'] = $child->action->out();
-        } elseif ($child->action instanceof action_link) {
+        } else if ($child->action instanceof action_link) {
             $attributes['link'] = $child->action->url->out();
         }
         $attributes['hidden'] = ($child->hidden);
@@ -128,12 +128,12 @@ class navigation extends settings_navigation_ajax {
             $attributes['children'] = [];
             foreach ($child->children as $subchild) {
                 $subchild = $this->convert($subchild, $depth + 1);
-                if(!empty($subchild)){
+                if (!empty($subchild)) {
                     $attributes['children'][] = $subchild;
                 }
             }
         }
-        
+
         return $attributes;
     }
 }

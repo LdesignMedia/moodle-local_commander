@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package local_commander
+ * @package   local_commander
  * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
@@ -35,12 +35,12 @@ require_login(null, false);
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/local/commander/ajax.php');
 
-if($courseid > 0){
-    $course = $DB->get_record('course', ['id' => $courseid] , '*' , MUST_EXIST);
+if ($courseid > 0) {
+    $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
     $PAGE->set_course($course);
 }
 
-$navigation = new \local_commander\navigation($PAGE , $courseid);
-echo  $navigation->get_menu_for_js();
+$navigation = new \local_commander\navigation($PAGE, $courseid);
+echo $navigation->get_menu_for_js();
 
 ajax_check_captured_output();

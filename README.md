@@ -12,6 +12,8 @@ Author
 * Min. required: Moodle 3.3.x
 * PHP: 7.0+ 
 
+[![Build Status](https://travis-ci.org/MoodleFreak/local_commander.svg?branch=master)](https://travis-ci.org/MoodleFreak/local_commander)
+
 Description
 ====================
 
