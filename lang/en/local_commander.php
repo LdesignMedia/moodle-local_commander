@@ -19,11 +19,12 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package local_commander
+ * @package   local_commander
  * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
+
 $string['pluginname'] = 'Commander';
 
 // JS.

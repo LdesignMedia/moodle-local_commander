@@ -9,8 +9,8 @@ Author
 ![MoodleFreak.com](http://moodlefreak.com/logo_small.png)
 
 * Author: Luuk Verhoeven, [MoodleFreak.com](http://www.moodlefreak.com/)
-* Min. required: Moodle 3.3.x
-* PHP: 7.0+ 
+* Min. required: Moodle 3.0.x
+* Supports PHP: 5.6 | 7.0 | 7.1 
 
 [![Build Status](https://travis-ci.org/MoodleFreak/local_commander.svg?branch=master)](https://travis-ci.org/MoodleFreak/local_commander)
 

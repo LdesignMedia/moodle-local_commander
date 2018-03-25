@@ -29,9 +29,9 @@ define(['jquery', 'core/notification'], function ($, notification) {
     'use strict';
 
     // Fix scrolling.
-    $.fn.scrollTo = function(elem, speed) {
+    $.fn.scrollTo = function (elem, speed) {
         $(this).stop().animate({
-            scrollTop:  $(this).scrollTop() - $(this).offset().top + $(elem).offset().top - 10
+            scrollTop: $(this).scrollTop() - $(this).offset().top + $(elem).offset().top - 10
         }, speed == undefined ? 1000 : speed);
         return this;
     };
@@ -91,17 +91,16 @@ define(['jquery', 'core/notification'], function ($, notification) {
          */
         $mainModalCommand: false,
 
-        $li_set : false,
+        $li_set: false,
         /**
          * Flag to check if modal is open.
          */
-        isShow: false,
+        isShow : false,
 
         /**
          * Save response
          */
         json: '',
-
 
         /**
          * Internal logging
@@ -232,10 +231,9 @@ define(['jquery', 'core/notification'], function ($, notification) {
             commanderApp.scrollTo();
         },
 
-        scrollTo : function () {
-            $('#local_commander_modal .local_commander-body div').scrollTo('#local_commander_modal ul li.active' , 200);
+        scrollTo: function () {
+            $('#local_commander_modal .local_commander-body div').scrollTo('#local_commander_modal ul li.active', 200);
         },
-
 
         /**
          * The command that we need to execute.
@@ -246,9 +244,9 @@ define(['jquery', 'core/notification'], function ($, notification) {
             // check if the element has link
             // @TODO maybe add way to execute other type of commands.
             var $el = $('#local_commander_modal ul li.active a');
-            if($el){
+            if ($el) {
                 var link = $el.attr('href');
-                if(link != '#'){
+                if (link != '#') {
                     window.location = link;
                 }
             }
@@ -289,10 +287,10 @@ define(['jquery', 'core/notification'], function ($, notification) {
             var $marker = $('<span class="" style="color:#F4BD21;"></span>');
 
             // Take the original.
-            var $clone = commanderApp.$li_set.clone( true );
+            var $clone = commanderApp.$li_set.clone(true);
 
             // Clear.
-            var $body =  $('.local_commander-body ul');
+            var $body = $('.local_commander-body ul');
             $body.html('');
 
             commanderApp.log('Searching: ' + word);
@@ -305,7 +303,7 @@ define(['jquery', 'core/notification'], function ($, notification) {
 
                 if ($el.innerHTML.match(re)) {
                     $el.innerHTML = $el.innerHTML.replace(re, function (t) {
-                        if(found == 0){
+                        if (found == 0) {
                             $li.addClass('active');
                             found++;
                         }

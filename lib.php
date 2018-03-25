@@ -37,7 +37,7 @@ defined('MOODLE_INTERNAL') || die;
  *
  * @throws coding_exception
  */
-function local_commander_extend_navigation(global_navigation  $navigation) {
+function local_commander_extend_navigation(global_navigation $navigation) {
     global $COURSE, $PAGE;
 
     // TODO Only add this if you have enough permissions.
@@ -49,7 +49,7 @@ function local_commander_extend_navigation(global_navigation  $navigation) {
 
     $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);
 
-    // @TODO using mustache template instead.
-    $PAGE->requires->strings_for_js(['js:header' , 'js:error_parsing','js:command_placeholder'], 'local_commander');
+    // @TODO Using mustache template instead.
+    $PAGE->requires->strings_for_js(['js:header', 'js:error_parsing', 'js:command_placeholder'], 'local_commander');
 
 }
