@@ -24,7 +24,8 @@
  * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
-define(['jquery', 'core/notification', 'core/yui'], function ($, Y) {
+/*eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
+define(['jquery', 'core/notification'], function ($, notification) {
     'use strict';
 
     // Fix scrolling.
@@ -112,7 +113,6 @@ define(['jquery', 'core/notification', 'core/yui'], function ($, Y) {
             // Check if we can show the log.
             try {
                 // Only show if enabled in cfg.
-
                 console.log.apply(console, arguments);
             } catch (exc) {
                 throw exc;
@@ -132,7 +132,8 @@ define(['jquery', 'core/notification', 'core/yui'], function ($, Y) {
                 '<div class="local_commander-header"><h2>' + M.util.get_string('js:header', 'local_commander') + '</h2></div>' +
                 '<div class="local_commander-body">' +
                 '</div>' +
-                '<input type="text" name="local_commander_command" id="local_commander_command" placeholder="' + M.util.get_string('js:command_placeholder', 'local_commander') + '">' +
+                '<input type="text" name="local_commander_command" id="local_commander_command" placeholder="' +
+                M.util.get_string('js:command_placeholder', 'local_commander') + '">' +
                 '</div><div id="local_commander_back_layer"></div>');
 
             // Set references.
@@ -140,7 +141,7 @@ define(['jquery', 'core/notification', 'core/yui'], function ($, Y) {
             commanderApp.$mainModalBackLayer = $('#local_commander_back_layer');
             commanderApp.$mainModalCommand = $('#local_commander_command');
 
-            commanderApp.$mainModalBackLayer.on('click', function (e) {
+            commanderApp.$mainModalBackLayer.on('click', function () {
                 commanderApp.hide();
             });
 
@@ -299,8 +300,8 @@ define(['jquery', 'core/notification', 'core/yui'], function ($, Y) {
             var re = new RegExp(word, 'gi');
             var found = 0;
             $.each($clone, function (i, e) {
-                var $li = $(this);
-                var $el = $(e).find('a').get(0);
+                var $li = $(e);
+                var $el = $li.find('a').get(0);
 
                 if ($el.innerHTML.match(re)) {
                     $el.innerHTML = $el.innerHTML.replace(re, function (t) {

@@ -29,6 +29,14 @@ Installation
 4.  install the plugin
 5.  you will need to fill out the settings.
 
+Development
+====================
+For the developers
+<pre>
+npm install --save-dev grunt grunt-contrib-less grunt-contrib-watch grunt-load-gruntfile
+</pre>
+
+
 Changelog
 ====================
 
