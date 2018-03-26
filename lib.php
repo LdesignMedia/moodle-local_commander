@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The local lib needed to hook with the core.
- * Quick Navigation
+ * The local lib needed to hook with the core Quick Navigation
  *
  * https://docs.moodle.org/dev/Local_plugins
  *
@@ -30,8 +29,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * Tweak to allow JS injection from a local plugin.
- * https://docs.moodle.org/dev/Local_plugins
+ * Tweak to allow JS injection from a local plugin https://docs.moodle.org/dev/Local_plugins.
  *
  * @param global_navigation $navigation
  *

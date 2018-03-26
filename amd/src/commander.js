@@ -24,7 +24,7 @@
  * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
-/*eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
+/* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
 define(['jquery', 'core/notification'], function ($, notification) {
     'use strict';
 

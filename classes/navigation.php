@@ -35,6 +35,11 @@ use settings_navigation_ajax;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class navigation
+ *
+ * @package local_commander
+ */
 class navigation extends settings_navigation_ajax {
 
     /**
