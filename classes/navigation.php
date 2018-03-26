@@ -14,16 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Navigation class
- *
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @package   local_commander
- * @copyright 2018 MoodleFreak.com
- * @author    Luuk Verhoeven
- **/
-
 namespace local_commander;
 
 use navigation_cache;
@@ -38,7 +28,10 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Class navigation
  *
- * @package local_commander
+ * @package   local_commander
+ * @copyright 2018 MoodleFreak.com
+ * @author    Luuk Verhoeven
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class navigation extends settings_navigation_ajax {
 
@@ -101,17 +94,17 @@ class navigation extends settings_navigation_ajax {
     }
 
     /**
-     * Recusively converts a child node and its children to XML for output
+     * Recusively converts a child node and its children to XML for output.
      *
-     * @param $child The child to convert
-     * @param int             $depth Pointlessly used to track the depth of the XML structure
+     * @param     $child The child to convert
+     * @param int $depth Pointlessly used to track the depth of the XML structure
      *
      * @return string JSON
      */
     protected function convert($child, $depth = 1) {
 
         // Make sure correct child type is used.
-        if(!$child instanceof navigation_node){
+        if (!$child instanceof navigation_node) {
             return '';
         }
 

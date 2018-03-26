@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Language EN
+ * Language EN.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -25,7 +25,8 @@
  **/
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Commander';
+// Default.
+$string['pluginname'] = 'Commander / Quick navigation';
 $string['commander:display'] = 'Local commander';
 
 // JS.
