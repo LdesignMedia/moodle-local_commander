@@ -15,27 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Language EN
+ *
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   local_commander
+ * @package   moodlefreak_local_commander
  * @copyright 2018 MoodleFreak.com
  * @author    Luuk Verhoeven
  **/
-defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Commander';
-$string['commander:display'] = 'Local commander';
+namespace local_commander\privacy;
 
-// JS.
-$string['js:header'] = 'Commander - speed up your Moodling';
-$string['js:command_placeholder'] = 'Search your for your command..';
-$string['js:error_parsing'] = 'Error parsing';
+class provider implements \core_privacy\local\metadata\null_provider {
 
-// Settings.
-$string['setting:key1'] = 'The shortcut key';
-$string['setting:key1_desc'] = 'The default keyboard shortcut is the <b>`</b> (above the TAB).';
-
-// Errors.
-$string['error:noaccess'] = 'Error: missing capability "commander:display"';
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string{
+        return 'privacy:null_reason';
+    }
+}

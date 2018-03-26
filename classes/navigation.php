@@ -98,12 +98,17 @@ class navigation extends settings_navigation_ajax {
     /**
      * Recusively converts a child node and its children to XML for output
      *
-     * @param navigation_node $child The child to convert
+     * @param $child The child to convert
      * @param int             $depth Pointlessly used to track the depth of the XML structure
      *
      * @return string JSON
      */
-    protected function convert(navigation_node $child, $depth = 1) {
+    protected function convert($child, $depth = 1) {
+
+        // Make sure correct child type is used.
+        if(!$child instanceof navigation_node){
+            return '';
+        }
 
         if (!$child->display) {
             return '';

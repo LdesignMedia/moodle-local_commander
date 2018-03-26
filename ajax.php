@@ -32,6 +32,11 @@ $courseid = optional_param('courseid', 0, PARAM_INT);
 // This should be accessed by only valid logged in user.
 require_login(null, false);
 
+if (!has_capability('local/commander:display', context_system::instance())) {
+    throw new moodle_exception('error:noaccess' , 'local_commander');
+}
+
+
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/local/commander/ajax.php');
 
