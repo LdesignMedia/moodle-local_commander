@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 // Default.
 $string['pluginname'] = 'Commander / Quick navigation';
 $string['commander:display'] = 'Local commander';
+$string['privacy:null_reason'] = 'No data collected by this plugin.';
 
 // JS.
 $string['js:header'] = 'Commander - speed up your Moodling';

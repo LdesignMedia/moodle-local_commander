@@ -84,8 +84,7 @@ class navigation extends settings_navigation_ajax {
      */
     public function get_menu_for_js() {
 
-        // @TODO  add custom commands actions enrolling, creating course and more..
-
+        // @TODO Add custom commands actions enrolling, creating course and more.
         // Convert and output the branch as JSON.
         return json_encode([
             'admin' => $this->convert($this->get('root')),
