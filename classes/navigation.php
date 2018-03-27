@@ -105,7 +105,7 @@ class navigation extends settings_navigation_ajax {
     /**
      * Recusively converts a child node and its children to XML for output.
      *
-     * @param     $child The child to convert
+     * @param navigation_node $child The child to convert
      * @param int $depth Pointlessly used to track the depth of the XML structure
      *
      * @return string JSON
