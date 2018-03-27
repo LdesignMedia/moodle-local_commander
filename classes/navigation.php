@@ -114,6 +114,7 @@ class navigation extends settings_navigation_ajax {
         $attributes = [];
         $attributes['id'] = $child->id;
         $attributes['name'] = (string)$child->text; // This can be lang_string object so typecast it.
+        $attributes['link'] = '#';
 
         if (is_string($child->action)) {
             $attributes['link'] = $child->action;

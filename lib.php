@@ -47,7 +47,7 @@ function local_commander_extend_navigation(global_navigation $navigation) {
     $PAGE->requires->css('/local/commander/styles.css');
     $arguments = [
         'courseid' => $COURSE->id,
-        'key' => get_config('local_commander' , 'key1')
+        'key1' => get_config('local_commander' , 'key1')
     ];
 
     $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);
