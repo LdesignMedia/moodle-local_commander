@@ -13,6 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Provider class
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   local_commander
+ * @copyright 2018 MoodleFreak.com
+ * @author    Luuk Verhoeven
+ **/
 
 namespace local_commander\privacy;
 

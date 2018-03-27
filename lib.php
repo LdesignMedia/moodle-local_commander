@@ -31,12 +31,10 @@ defined('MOODLE_INTERNAL') || die;
 /**
  * Tweak to allow JS injection from a local plugin https://docs.moodle.org/dev/Local_plugins.
  *
- * @param global_navigation $navigation
- *
  * @throws coding_exception
  * @throws dml_exception
  */
-function local_commander_extend_navigation(global_navigation $navigation) {
+function local_commander_extend_navigation() {
     global $COURSE, $PAGE;
 
     if (!has_capability('local/commander:display', context_system::instance())) {
@@ -47,12 +45,12 @@ function local_commander_extend_navigation(global_navigation $navigation) {
     $PAGE->requires->css('/local/commander/styles.css');
     $arguments = [
         'courseid' => $COURSE->id,
-        'key1' => get_config('local_commander' , 'key1')
+        'key1' => get_config('local_commander', 'key1'),
     ];
 
     $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);
 
-    // @TODO Using mustache template instead.
+    // TODO Using mustache template instead.
     $PAGE->requires->strings_for_js([
         'js:header',
         'js:error_parsing',

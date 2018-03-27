@@ -14,6 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Navigation class
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   local_commander
+ * @copyright 2018 MoodleFreak.com
+ * @author    Luuk Verhoeven
+ **/
+
 namespace local_commander;
 
 use navigation_cache;
@@ -84,7 +94,7 @@ class navigation extends settings_navigation_ajax {
      */
     public function get_menu_for_js() {
 
-        // @TODO Add custom commands actions enrolling, creating course and more.
+        // TODO Add custom commands actions enrolling, creating course and more.
         // Convert and output the branch as JSON.
         return json_encode([
             'admin' => $this->convert($this->get('root')),
