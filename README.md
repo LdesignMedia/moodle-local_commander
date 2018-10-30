@@ -6,13 +6,13 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 <img src="https://moodle.org/pluginfile.php/50/local_plugins/plugin_screenshots/2037/2018-03-25_04-38-44.png" alt="Screenshot" style="width: 500px;"/>
 
 ## Author
-![MoodleFreak.com](http://moodlefreak.com/logo_small.png)
+![MFreak.nl](http://MFreak.nl/logo_small.png)
 
-* Author: Luuk Verhoeven, [MoodleFreak.com](http://www.moodlefreak.com/)
+* Author: Luuk Verhoeven, [MFreak.nl](https://MFreak.nl/)
 * Min. required: Moodle 3.0.x
 * Supports PHP: 5.6 | 7.0 | 7.1 
 
-[![Build Status](https://travis-ci.org/MoodleFreak/moodle-local_commander.svg?branch=master)](https://travis-ci.org/MoodleFreak/local_commander)
+[![Build Status](https://travis-ci.org/MFreakNL/moodle-local_commander.svg?branch=master)](https://travis-ci.org/MFreakNL/local_commander)
 
 ## Description
 
@@ -31,7 +31,7 @@ Just press ` (above the TAB key) to bring up the **commander**. Use the UP and D
 
 ## Security
 
-If you discover any security related issues, please email [luuk@moodlefreak.com](mailto:luuk@moodlefreak.com) instead of using the issue tracker.
+If you discover any security related issues, please email [luuk@MFreak.nl](mailto:luuk@MFreak.nl) instead of using the issue tracker.
 
 ## License
 
