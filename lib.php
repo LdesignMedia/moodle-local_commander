@@ -31,6 +31,8 @@ defined('MOODLE_INTERNAL') || die;
 /**
  * Tweak to allow JS injection from a local plugin https://docs.moodle.org/dev/Local_plugins.
  *
+ * @TODO use header function instead
+ *
  * @throws coding_exception
  * @throws dml_exception
  */
