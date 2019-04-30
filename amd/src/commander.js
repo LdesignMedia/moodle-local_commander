@@ -25,11 +25,11 @@
  * @author    Luuk Verhoeven
  **/
 /* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
-define(['jquery', 'core/notification'], function($, notification) {
+define(['jquery', 'core/notification'], function ($, notification) {
     'use strict';
 
     // Fix scrolling.
-    $.fn.scrollTo = function(elem, speed) {
+    $.fn.scrollTo = function (elem, speed) {
         $(this).stop().animate({
             scrollTop: $(this).scrollTop() - $(this).offset().top + $(elem).offset().top - 10
         }, speed == undefined ? 1000 : speed);
@@ -42,14 +42,14 @@ define(['jquery', 'core/notification'], function($, notification) {
      */
     var commanderAppOptions = {
         courseid: '',
-        key1: 192,
+        key1    : 192,
     };
 
     /**
      * Set options base on listed options
      * @param {object} options
      */
-    var setOptions = function(options) {
+    var setOptions = function (options) {
         "use strict";
         var key, vartype;
         for (key in commanderAppOptions) {
@@ -109,7 +109,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * Internal logging
          * @param {*} val
          */
-        log: function() {
+        log: function () {
             "use strict";
 
             // Check if we can show the log.
@@ -124,7 +124,7 @@ define(['jquery', 'core/notification'], function($, notification) {
         /**
          * Render UI.
          */
-        render: function() {
+        render: function () {
             "use strict";
             var timer = 0;
             commanderApp.log('render UI');
@@ -143,26 +143,34 @@ define(['jquery', 'core/notification'], function($, notification) {
             commanderApp.$mainModalBackLayer = $('#local_commander_back_layer');
             commanderApp.$mainModalCommand = $('#local_commander_command');
 
-            commanderApp.$mainModalBackLayer.on('click', function() {
+            commanderApp.setHeight();
+
+            commanderApp.$mainModalBackLayer.on('click', function () {
                 commanderApp.hide();
             });
 
             // Search set some timeout optimize speed.
-            commanderApp.$mainModalCommand.on('keydown', function(e) {
+            commanderApp.$mainModalCommand.on('keydown', function (e) {
 
                 if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40 || commanderAppOptions.key1 == e.keyCode) {
                     // Skip this keys here.
                     e.preventDefault();
                     return;
                 }
+                // Esc key pressed.
+                if (e.keyCode === 27) {
+                    commanderApp.hide();
+                    return;
+                }
 
                 clearTimeout(timer);
-                timer = setTimeout(function() {
+                timer = setTimeout(function () {
                     commanderApp.search(commanderApp.$mainModalCommand.val());
                 }, 100);
             });
+
             // Prevent adding the shortcut key.
-            commanderApp.$mainModalCommand.on('keypress', (function(evt) {
+            commanderApp.$mainModalCommand.on('keypress', (function (evt) {
                 // Block ` for the input field.
                 var keycode = evt.charCode || evt.keyCode;
                 if (commanderAppOptions.key1 == keycode) {
@@ -180,11 +188,11 @@ define(['jquery', 'core/notification'], function($, notification) {
         /**
          * Start the commander.
          */
-        start: function() {
+        start: function () {
             // Set holders.
             commanderApp.$mainModal = $('#local_commander_modal');
 
-            $(document).on('keydown', function(e) {
+            $(document).on('keydown', function (e) {
 
                 // Check for arrow keys.
                 if (commanderApp.isShow) {
@@ -220,11 +228,38 @@ define(['jquery', 'core/notification'], function($, notification) {
         },
 
         /**
+         * highlightWord
+         *
+         * @param node
+         * @param word
+         */
+        highlightWord: function (node, word) {
+            if (node.nodeType == 3) {
+                var pos = node.data.toUpperCase().indexOf(word);
+                if (pos >= 0) {
+                    var spannode = document.createElement('span');
+                    spannode.className = 'highlight';
+                    spannode.style.backgroundColor = '#f4bd21';
+                    var middlebit = node.splitText(pos);
+                    var endbit = middlebit.splitText(word.length);
+                    var middleclone = middlebit.cloneNode(true);
+                    spannode.appendChild(middleclone);
+                    middlebit.parentNode.replaceChild(spannode, middlebit);
+                }
+
+            } else if (node.nodeType == 1 && node.childNodes) {
+                for (var i = 0; i < node.childNodes.length; ++i) {
+                    i += commanderApp.highlightWord(node.childNodes[i], word);
+                }
+            }
+        },
+
+        /**
          * Action on keyboard arrow key UP.
          */
-        arrowUp: function() {
+        arrowUp: function () {
             commanderApp.log('arrowUp');
-            $('#local_commander_modal ul li.active').removeClass('active').prev().addClass('active');
+            $('#local_commander_modal ul li.active').removeClass('active').addClass('active');
 
             //
             commanderApp.scrollTo();
@@ -233,7 +268,7 @@ define(['jquery', 'core/notification'], function($, notification) {
         /**
          * Action on keyboard arrow key DOWN.
          */
-        arrowDown: function() {
+        arrowDown: function () {
             commanderApp.log('arrowDown');
             $('#local_commander_modal ul li.active').removeClass('active').next().addClass('active');
 
@@ -241,14 +276,14 @@ define(['jquery', 'core/notification'], function($, notification) {
             commanderApp.scrollTo();
         },
 
-        scrollTo: function() {
+        scrollTo: function () {
             $('#local_commander_modal .local_commander-body div').scrollTo('#local_commander_modal ul li.active', 200);
         },
 
         /**
          * The command that we need to execute.
          */
-        goToCommand: function() {
+        goToCommand: function () {
             commanderApp.log('goToCommand');
             // Check if there is a element selected.
             // Check if the element has link.
@@ -265,23 +300,23 @@ define(['jquery', 'core/notification'], function($, notification) {
         /**
          *
          */
-        loadMenu: function() {
+        loadMenu: function () {
             "use strict";
 
             $.ajax({
-                url: M.cfg.wwwroot + '/local/commander/ajax.php',
-                method: "GET",
-                data: {
+                url     : M.cfg.wwwroot + '/local/commander/ajax.php',
+                method  : "GET",
+                data    : {
                     'courseid': commanderAppOptions.courseid
                 },
                 dataType: "json",
-            }).done(function(response) {
+            }).done(function (response) {
                 commanderApp.log(response);
                 commanderApp.json = response;
 
                 commanderApp.setMenu();
 
-            }).fail(function() {
+            }).fail(function () {
                 notification.alert('js:error_parsing', 'local_commander');
             });
         },
@@ -290,51 +325,39 @@ define(['jquery', 'core/notification'], function($, notification) {
          * Search in the commands.
          * @param {string} word
          */
-        search: function(word) {
+        search: function (word) {
             "use strict";
 
-            // Hide all.
-            var $marker = $('<span class="" style="color:#f4bd21;"></span>');
+            // Remove active.
+            $('.local_commander-body ul li').show();
+            commanderApp.$liSet.find('li.active').removeClass('active');
 
-            // Take the original.
-            var $clone = commanderApp.$liSet.clone(true);
+            commanderApp.$liSet.find("span.highlight").each(function () {
+                var thisParent = this.parentNode;
+                thisParent.replaceChild(this.firstChild, this);
+                commanderApp.removeHighlight(thisParent);
+            }).end();
 
-            // Clear.
-            var $body = $('.local_commander-body ul');
-            $body.html('');
+            if (word != '') {
 
-            commanderApp.log('Searching: ' + word);
-            word = word.replace(/[^\w\s]/gi, '');
-            commanderApp.log('Searching cleaned: ' + word);
+                commanderApp.$liSet.children().each(function () {
+                    commanderApp.highlightWord(this, word.toUpperCase());
+                });
 
-            var re = new RegExp(word, 'gi');
-            var found = 0;
-            $.each($clone, function(i, e) {
-                var $li = $(e);
-                var $el = $li.find('a').get(0);
+                // Set active li item.
+                $('span.highlight').first().parent().parent().addClass('active');
 
-                if ($el.innerHTML.match(re)) {
-                    $el.innerHTML = $el.innerHTML.replace(re, function(t) {
-                        if (found == 0) {
-                            $li.addClass('active');
-                            found++;
-                        }
-
-                        // Set new text.
-                        $marker.text(t);
-                        return $marker.get(0).outerHTML;
-                    });
-
-                    $body.append($li);
-                }
-            });
+                // Hide others.
+                $('.local_commander-body ul li:not(:has(span))').hide();
+            }
         },
 
         /**
          * Build the ul command list.
          */
-        setMenu: function() {
+        setMenu: function () {
             "use strict";
+            commanderApp.log('setMenu() ');
 
             var html = '<div><ul>';
 
@@ -350,7 +373,7 @@ define(['jquery', 'core/notification'], function($, notification) {
             html += '</ul></div>';
             commanderApp.$mainModal.find('.local_commander-body').append(html);
 
-            commanderApp.$liSet = $('.local_commander-body ul li');
+            commanderApp.$liSet = $('.local_commander-body ul');
         },
 
         /**
@@ -361,7 +384,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * @param {string} parentName
          * @returns {string}
          */
-        renderMenuItems: function(child, depth, parentName) {
+        renderMenuItems: function (child, depth, parentName) {
             "use strict";
             var html = '';
 
@@ -386,7 +409,7 @@ define(['jquery', 'core/notification'], function($, notification) {
             }
 
             if (child.haschildren) {
-                $.each(child.children, function(i, el) {
+                $.each(child.children, function (i, el) {
                     html += commanderApp.renderMenuItems(el, depth + 1, parentName + child.name);
                 });
             }
@@ -398,12 +421,14 @@ define(['jquery', 'core/notification'], function($, notification) {
         /**
          * Show the modal
          */
-        show: function() {
+        show: function () {
             "use strict";
             commanderApp.$mainModal.show();
             commanderApp.$mainModalBackLayer.show();
 
             commanderApp.isShow = true;
+
+            commanderApp.setHeight();
 
             // Focus on search field.
             commanderApp.$mainModalCommand.focus();
@@ -412,12 +437,29 @@ define(['jquery', 'core/notification'], function($, notification) {
         /**
          * Hide the modal
          */
-        hide: function() {
+        hide     : function () {
             commanderApp.$mainModal.hide();
             commanderApp.$mainModalBackLayer.hide();
 
             commanderApp.isShow = false;
         },
+        /**
+         * Set 50% of viewport height
+         */
+        setHeight: function () {
+
+            commanderApp.$mainModal.css({
+                'height': $(window).height() / 2
+            });
+        },
+
+        /**
+         *
+         * @param node
+         */
+        removeHighlight: function (node) {
+            $(node).html($(node).text());
+        }
     };
 
     return {
@@ -426,7 +468,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * Called from Moodle.
          * @param {array} params
          */
-        init: function(params) {
+        init: function (params) {
 
             /**
              * Set the options.
@@ -436,9 +478,8 @@ define(['jquery', 'core/notification'], function($, notification) {
             /**
              * Wait for jQuery
              */
-            $(document).ready(function() {
-
-                commanderApp.log('ready() - local commander v1.122', commanderAppOptions);
+            $(document).ready(function () {
+                commanderApp.log('ready() - local commander v1.25', commanderAppOptions);
                 commanderApp.start();
             });
         }

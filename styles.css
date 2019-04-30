@@ -4,7 +4,7 @@
     position: fixed;
     top: 40px;
     left: 50%;
-    height: 680px;
+    min-height: 50vh;
     overflow: hidden;
     width: 600px;
     margin: 0 0 0 -300px;
@@ -15,11 +15,14 @@
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
+    border-bottom: 5px solid #1b2834;
 }
 
 .local_commander-header {
-    margin: 15px;
+    margin: 0;
+    padding: 5px 15px;
     color: #fff;
+    background: #151f2a;
 }
 
 .local_commander-body {
@@ -75,7 +78,7 @@
 
 .local_commander-body div {
     overflow-y: scroll;
-    height: 575px;
+    height: calc(100% - 100px);
 }
 
 #local_commander_back_layer {
