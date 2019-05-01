@@ -32,7 +32,7 @@ $string['privacy:null_reason'] = 'No data collected by this plugin.';
 
 // JS.
 $string['js:header'] = 'Commander - speed up your Moodling';
-$string['js:command_placeholder'] = 'Search your for your command..';
+$string['js:command_placeholder'] = 'Search here for your command..';
 $string['js:error_parsing'] = 'Error parsing';
 
 // Settings.
