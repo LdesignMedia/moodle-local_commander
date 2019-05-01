@@ -358,7 +358,7 @@ define(['jquery', 'core/notification'], function ($, notification) {
             // Remove highlights.
             commanderApp.$liSet.find("span.highlight").each(function () {
                 commanderApp.removeHighlight(this.parentNode);
-            })
+            });
 
             if (word != '') {
 
