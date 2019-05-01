@@ -25,6 +25,7 @@
  * @author    Luuk Verhoeven
  **/
 /* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
+/* eslint-disable no-invalid-this */
 define(['jquery', 'core/notification'], function ($, notification) {
     'use strict';
 
@@ -268,7 +269,7 @@ define(['jquery', 'core/notification'], function ($, notification) {
             if($prev.length){
                 $prev.addClass('active');
             }else{
-                $el.addClass('active')
+                $el.addClass('active');
             }
 
             //
@@ -289,7 +290,7 @@ define(['jquery', 'core/notification'], function ($, notification) {
             if($next.length){
                 $next.addClass('active');
             }else{
-                $('#local_commander_modal ul li:visible').last().addClass('active')
+                $('#local_commander_modal ul li:visible').last().addClass('active');
             }
             //
             commanderApp.scrollTo();

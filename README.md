@@ -20,7 +20,11 @@ Just press ` (above the TAB key) to bring up the **commander**. Use the UP and D
 
 ## List of features
 - Quick navigation by pressing **`**
+- Configurable trigger keyboard key
 - Available for 'manager', 'coursecreator', 'editingteacher' ,'teacher'
+- Navigate ⬆ / ⬇ keyboard
+- Open active item with keyboard ↵ 
+- ESC keyboard close modal
 
 ## Installation
 1.  Copy this plugin to the `local\commander` folder on the server
@@ -40,7 +44,3 @@ The GNU GENERAL PUBLIC LICENSE. Please see [License File](LICENSE) for more info
 ## Contributing
 
 Contributions are welcome and will be fully credited. We accept contributions via Pull Requests on Github.
-
-## Changelog
-
-See version control for the complete history. Major changes in this version will be listed below.
