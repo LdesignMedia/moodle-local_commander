@@ -34,10 +34,14 @@ defined('MOODLE_INTERNAL') || die;
  * @throws coding_exception
  * @throws dml_exception
  */
-function local_commander_extend_navigation() {
+function local_commander_before_http_headers() {
     global $COURSE, $PAGE;
+    if (isloggedin() === false) {
+        return;
+    }
 
-    if (!has_capability('local/commander:display', context_system::instance())) {
+    $context = empty($COURSE->id) ? context_system::instance() : context_course::instance($COURSE->id);
+    if (!has_capability('local/commander:display', $context)) {
         return;
     }
 

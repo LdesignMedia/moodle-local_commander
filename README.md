@@ -10,7 +10,7 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 
 * Author: Luuk Verhoeven, [MFreak.nl](https://MFreak.nl/)
 * Min. required: Moodle 3.0.x
-* Supports PHP: 5.6 | 7.0 | 7.1 
+* Supports PHP: 7.0 | 7.1 
 
 [![Build Status](https://travis-ci.org/MFreakNL/moodle-local_commander.svg?branch=master)](https://travis-ci.org/MFreakNL/moodle-local_commander)
 
