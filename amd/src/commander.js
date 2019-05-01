@@ -229,10 +229,10 @@ define(['jquery', 'core/notification'], function($, notification) {
         },
 
         /**
-         * highlightWord
+         * Highlight words
          *
-         * @param node
-         * @param word
+         * @param {object} node
+         * @param {string} word
          */
         highlightWord: function(node, word) {
             if (node.nodeType == 3) {
@@ -473,8 +473,8 @@ define(['jquery', 'core/notification'], function($, notification) {
         },
 
         /**
-         * removeHighlight
-         * @param node
+         * Remove highlight
+         * @param {object} node
          */
         removeHighlight: function(node) {
             $(node).html($(node).text());
