@@ -241,7 +241,6 @@ define(['jquery', 'core/notification'], function ($, notification) {
                     spannode.className = 'highlight';
                     spannode.style.backgroundColor = '#f4bd21';
                     var middlebit = node.splitText(pos);
-                    var endbit = middlebit.splitText(word.length);
                     var middleclone = middlebit.cloneNode(true);
                     spannode.appendChild(middleclone);
                     middlebit.parentNode.replaceChild(spannode, middlebit);
@@ -259,7 +258,18 @@ define(['jquery', 'core/notification'], function ($, notification) {
          */
         arrowUp: function () {
             commanderApp.log('arrowUp');
-            $('#local_commander_modal ul li.active').removeClass('active').addClass('active');
+            var $el =  $('#local_commander_modal ul li.active'),
+                $prev = $el.closest("li").prevAll("li:visible").eq(0);
+
+            if($el.length){
+                $el.removeClass('active');
+            }
+
+            if($prev.length){
+                $prev.addClass('active');
+            }else{
+                $el.addClass('active')
+            }
 
             //
             commanderApp.scrollTo();
@@ -270,12 +280,24 @@ define(['jquery', 'core/notification'], function ($, notification) {
          */
         arrowDown: function () {
             commanderApp.log('arrowDown');
-            $('#local_commander_modal ul li.active').removeClass('active').next().addClass('active');
+            var $el =  $('#local_commander_modal ul li.active'),
+                $next = $el.closest("li").nextAll("li:visible").eq(0);
 
+            if($el.length){
+                $el.removeClass('active');
+            }
+            if($next.length){
+                $next.addClass('active');
+            }else{
+                $('#local_commander_modal ul li:visible').last().addClass('active')
+            }
             //
             commanderApp.scrollTo();
         },
 
+        /**
+         * Scroll to active item.
+         */
         scrollTo: function () {
             $('#local_commander_modal .local_commander-body div').scrollTo('#local_commander_modal ul li.active', 200);
         },
@@ -298,7 +320,7 @@ define(['jquery', 'core/notification'], function ($, notification) {
         },
 
         /**
-         *
+         * Load menu
          */
         loadMenu: function () {
             "use strict";
@@ -315,7 +337,7 @@ define(['jquery', 'core/notification'], function ($, notification) {
                 commanderApp.json = response;
 
                 commanderApp.setMenu();
-
+                commanderApp.setHeight();
             }).fail(function () {
                 notification.alert('js:error_parsing', 'local_commander');
             });
@@ -332,11 +354,10 @@ define(['jquery', 'core/notification'], function ($, notification) {
             $('.local_commander-body ul li').show();
             commanderApp.$liSet.find('li.active').removeClass('active');
 
+            // Remove highlights.
             commanderApp.$liSet.find("span.highlight").each(function () {
-                var thisParent = this.parentNode;
-                thisParent.replaceChild(this.firstChild, this);
-                commanderApp.removeHighlight(thisParent);
-            }).end();
+                commanderApp.removeHighlight(this.parentNode);
+            })
 
             if (word != '') {
 
@@ -345,7 +366,7 @@ define(['jquery', 'core/notification'], function ($, notification) {
                 });
 
                 // Set active li item.
-                $('span.highlight').first().parent().parent().addClass('active');
+                $('.local_commander-body span.highlight').first().parent().parent().addClass('active');
 
                 // Hide others.
                 $('.local_commander-body ul li:not(:has(span))').hide();
@@ -428,8 +449,6 @@ define(['jquery', 'core/notification'], function ($, notification) {
 
             commanderApp.isShow = true;
 
-            commanderApp.setHeight();
-
             // Focus on search field.
             commanderApp.$mainModalCommand.focus();
         },
@@ -447,14 +466,13 @@ define(['jquery', 'core/notification'], function ($, notification) {
          * Set 50% of viewport height
          */
         setHeight: function () {
-
-            commanderApp.$mainModal.css({
-                'height': $(window).height() / 2
-            });
+            var height = Math.round($(window).height() / 2);
+            commanderApp.$mainModal.height(height);
+            $('.local_commander-body div').height(height - 100);
         },
 
         /**
-         *
+         * removeHighlight
          * @param node
          */
         removeHighlight: function (node) {
