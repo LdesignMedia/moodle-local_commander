@@ -39,10 +39,10 @@ before_install:
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
+  - moodle-plugin-ci add-plugin moodlehq/moodle-local_moodlecheck
   - moodle-plugin-ci install
 
 script:
-  - moodle-plugin-ci add-plugin moodlehq/moodle-local_moodlecheck
   - php moodle/local/moodlecheck/cli/moodlecheck.php --path=mod/gcanvas --format=text
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
