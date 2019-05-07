@@ -6,7 +6,7 @@ sudo: required
 
 addons:
   firefox: "47.0.1"
-  postgresql: "9.3"
+  postgresql: "9.4"
   apt:
     packages:
       - openjdk-8-jre-headless
@@ -17,16 +17,18 @@ cache:
     - $HOME/.npm
 
 php:
-# PHP 5.6 gives errors because of the provider.php needs to be PHP7
- - 7.0
- - 7.1
+  # PHP 5.6 gives errors because of the provider.php needs to be PHP7
+  - 7.0
+  - 7.1
 
 env:
- global:
-  - MOODLE_BRANCH=MOODLE_32_STABLE
- matrix:
-  - DB=pgsql
-  - DB=mysqli
+  global:
+    - MOODLE_BRANCH=MOODLE_32_STABLE
+    - MOODLE_BRANCH=MOODLE_35_STABLE
+    - MOODLE_BRANCH=MOODLE_36_STABLE
+  matrix:
+    - DB=pgsql
+    - DB=mysqli
 
 before_install:
   - phpenv config-rm xdebug.ini
@@ -40,6 +42,8 @@ install:
   - moodle-plugin-ci install
 
 script:
+  - moodle-plugin-ci add-plugin moodlehq/moodle-local_moodlecheck
+  - php moodle/local/moodlecheck/cli/moodlecheck.php --path=mod/gcanvas --format=text
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
