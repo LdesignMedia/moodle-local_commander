@@ -2,7 +2,7 @@
   "name": "moodle-local_commander",
   "description": "The commander tool for moodle",
   "devDependencies": {
-    "eslint": "4.6.1",
+    "eslint": "4.18.2",
     "eslint-plugin-promise": "3.5.0",
     "grunt": "1.0.1",
     "grunt-contrib-uglify": "1.0.1",
