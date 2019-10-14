@@ -17,9 +17,6 @@
 /**
  *  Settings
  *
- * Todo add this helper and add dropdown for the specialkeys shift / alt / ctrl
- * https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
- *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package local_commander
@@ -27,15 +24,21 @@
  * @author    Luuk Verhoeven
  **/
 
+use local_commander\admin_setting_keycode;
+
 defined('MOODLE_INTERNAL') || die;
 if ($hassiteconfig) {
+
+    // Load keycode helper.
+    $PAGE->requires->js_call_amd('local_commander/settings', 'init');
+
     $settings = new admin_settingpage('local_commander',
         new lang_string('pluginname', 'local_commander'));
 
-    $settings->add(new admin_setting_configtext('local_commander/key1',
-        new lang_string('setting:key1', 'local_commander'),
-        new lang_string('setting:key1_desc', 'local_commander'),
-        192, PARAM_INT));
+    $settings->add(new admin_setting_keycode('local_commander/keys',
+        new lang_string('setting:keys', 'local_commander'),
+        new lang_string('setting:keys_desc', 'local_commander'),
+        'backquote,intlbackslash', PARAM_TEXT));
 
     $ADMIN->add('localplugins', $settings);
 }

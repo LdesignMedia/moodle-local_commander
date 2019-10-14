@@ -34,10 +34,11 @@ $string['privacy:null_reason'] = 'No data collected by this plugin.';
 $string['js:header'] = 'Commander - speed up your Moodling';
 $string['js:command_placeholder'] = 'Search here for your command..';
 $string['js:error_parsing'] = 'Error parsing';
+$string['js:keycode_help'] = 'KeyboardEvent.code helper (press a keyboard key to see its code)';
 
 // Settings.
-$string['setting:key1'] = 'The shortcut key';
-$string['setting:key1_desc'] = 'The default keyboard shortcut is the <b>`</b> (above the TAB).';
+$string['setting:keys'] = 'KeyboardEvent.code';
+$string['setting:keys_desc'] = 'The default keyboard shortcut is the <b>` Backquote</b> (above the TAB).';
 
 // Errors.
 $string['error:noaccess'] = 'Error: missing capability "commander:display"';

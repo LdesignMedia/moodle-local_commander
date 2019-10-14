@@ -29,6 +29,16 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
+ * @return array
+ * @throws dml_exception
+ */
+function local_commander_get_trigger_keys() : array {
+    $keys = get_config('local_commander', 'keys');
+
+    return explode(',', $keys);
+}
+
+/**
  * Tweak to allow JS injection from a local plugin https://docs.moodle.org/dev/Local_plugins.
  *
  * @throws coding_exception
@@ -45,11 +55,10 @@ function local_commander_before_http_headers() {
         return;
     }
 
-    $PAGE->requires->jquery();
     $PAGE->requires->css('/local/commander/styles.css');
     $arguments = [
         'courseid' => $COURSE->id,
-        'key1' => get_config('local_commander', 'key1'),
+        'keys' => local_commander_get_trigger_keys(),
     ];
 
     $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);

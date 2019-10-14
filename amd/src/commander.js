@@ -43,7 +43,7 @@ define(['jquery', 'core/notification'], function($, notification) {
      */
     var commanderAppOptions = {
         courseid: '',
-        key1: 192,
+        keys: [],
     };
 
     /**
@@ -64,8 +64,9 @@ define(['jquery', 'core/notification'], function($, notification) {
                     commanderAppOptions[key] = Number(options[key]);
                 } else if (vartype === 'string') {
                     commanderAppOptions[key] = String(options[key]);
+                } else {
+                    commanderAppOptions[key] = options[key];
                 }
-                // Skip all other types.
             }
         }
     };
@@ -153,13 +154,8 @@ define(['jquery', 'core/notification'], function($, notification) {
             // Search set some timeout optimize speed.
             commanderApp.$mainModalCommand.on('keydown', function(e) {
 
-                if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40 || commanderAppOptions.key1 == e.keyCode) {
-                    // Skip this keys here.
-                    e.preventDefault();
-                    return;
-                }
                 // Esc key pressed.
-                if (e.keyCode === 27) {
+                if (e.code === 'Esc') {
                     commanderApp.hide();
                     return;
                 }
@@ -171,14 +167,13 @@ define(['jquery', 'core/notification'], function($, notification) {
             });
 
             // Prevent adding the shortcut key.
-            commanderApp.$mainModalCommand.on('keypress', (function(evt) {
-                // Block ` for the input field.
-                var keycode = evt.charCode || evt.keyCode;
-                if (commanderAppOptions.key1 == keycode) {
-                    return false;
-                }
-                return true;
-            }));
+            // commanderApp.$mainModalCommand.on('keypress', (function(e) {
+            //     // Block ` for the input field.
+            //     if (commanderAppOptions.keys.indexOf(e.code.toLowerCase()) !== -1) {
+            //         return false;
+            //     }
+            //     return true;
+            // }));
 
             // Loading the menu content once.
             if (commanderApp.json === '') {
@@ -194,23 +189,38 @@ define(['jquery', 'core/notification'], function($, notification) {
             commanderApp.$mainModal = $('#local_commander_modal');
 
             $(document).on('keydown', function(e) {
+                var keyboardCode = e.code.toLowerCase();
+                commanderApp.log('Pressed:', keyboardCode);
 
                 // Check for arrow keys.
                 if (commanderApp.isShow) {
-                    if (e.keyCode == 13) {
-                        e.preventDefault();
-                        commanderApp.goToCommand();
-                    } else if (e.keyCode == 38) {
-                        e.preventDefault();
-                        commanderApp.arrowUp();
-                    } else if (e.keyCode == 40) {
-                        e.preventDefault();
-                        commanderApp.arrowDown();
+                    switch (keyboardCode) {
+                        case 'enter':
+                            e.preventDefault();
+                            commanderApp.goToCommand();
+                            break;
+                        case 'arrowup':
+                            e.preventDefault();
+                            commanderApp.arrowUp();
+                            break;
+                        case 'arrowdown':
+                            e.preventDefault();
+                            commanderApp.arrowDown();
+                            break;
                     }
+                    return;
                 }
 
-                if (e.keyCode == commanderAppOptions.key1) {
+                if (commanderAppOptions.keys.indexOf(keyboardCode) !== -1) {
                     e.preventDefault();
+                    commanderApp.log('Commander keyboard key triggered');
+
+                    // Validate we not triggered in an editable area.
+                    if (e.target.tagName == 'INPUT' || e.target.tagName == 'SELECT'
+                        || e.target.tagName == 'TEXTAREA' || e.target.isContentEditable) {
+                        commanderApp.log('Hide when we are in an editable element');
+                        return;
+                    }
 
                     // Only render if needed.
                     if (commanderApp.$mainModal.length == 0) {
@@ -360,7 +370,7 @@ define(['jquery', 'core/notification'], function($, notification) {
                 commanderApp.removeHighlight(this.parentNode);
             });
 
-            if (word != '') {
+            if (word !== '') {
 
                 commanderApp.$liSet.children().each(function() {
                     commanderApp.highlightWord(this, word.toUpperCase());
