@@ -154,12 +154,6 @@ define(['jquery', 'core/notification'], function($, notification) {
             // Search set some timeout optimize speed.
             commanderApp.$mainModalCommand.on('keydown', function(e) {
 
-                // Esc key pressed.
-                if (e.code === 'Esc') {
-                    commanderApp.hide();
-                    return;
-                }
-
                 clearTimeout(timer);
                 timer = setTimeout(function() {
                     commanderApp.search(commanderApp.$mainModalCommand.val());
@@ -191,18 +185,25 @@ define(['jquery', 'core/notification'], function($, notification) {
             $(document).on('keydown', function(e) {
                 var keyboardCode = e.code.toLowerCase();
                 commanderApp.log('Pressed:', keyboardCode);
+                commanderApp.log('Show:', commanderApp.isShow);
 
                 // Check for arrow keys.
                 if (commanderApp.isShow) {
                     switch (keyboardCode) {
+                        case 'escape':
+                            commanderApp.hide();
+                            break;
+
                         case 'enter':
                             e.preventDefault();
                             commanderApp.goToCommand();
                             break;
+
                         case 'arrowup':
                             e.preventDefault();
                             commanderApp.arrowUp();
                             break;
+
                         case 'arrowdown':
                             e.preventDefault();
                             commanderApp.arrowDown();
@@ -414,6 +415,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * @param {object} child
          * @param {int} depth
          * @param {string} parentName
+         *
          * @returns {string}
          */
         renderMenuItems: function(child, depth, parentName) {
@@ -473,6 +475,7 @@ define(['jquery', 'core/notification'], function($, notification) {
 
             commanderApp.isShow = false;
         },
+
         /**
          * Set 50% of viewport height
          */
@@ -508,7 +511,7 @@ define(['jquery', 'core/notification'], function($, notification) {
              * Wait for jQuery
              */
             $(document).ready(function() {
-                commanderApp.log('ready() - local commander v1.25', commanderAppOptions);
+                commanderApp.log('ready() - local commander v3.80', commanderAppOptions);
                 commanderApp.start();
             });
         }
