@@ -16,7 +16,8 @@
 /**
  * JS to show the popup and interact with it.
  *
- * Tested in Moodle 3.4
+ *
+ * Tested in Moodle 3.8
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -153,21 +154,23 @@ define(['jquery', 'core/notification'], function($, notification) {
 
             // Search set some timeout optimize speed.
             commanderApp.$mainModalCommand.on('keydown', function(e) {
+                var keyboardCode = e.code.toLowerCase();
+
+                switch (keyboardCode) {
+                    case 'escape':
+                    case 'enter':
+                    case 'arrowup':
+                    case 'arrowdown':
+                        return;
+                }
+
+                commanderApp.log('Searching');
 
                 clearTimeout(timer);
                 timer = setTimeout(function() {
                     commanderApp.search(commanderApp.$mainModalCommand.val());
                 }, 100);
             });
-
-            // Prevent adding the shortcut key.
-            // commanderApp.$mainModalCommand.on('keypress', (function(e) {
-            //     // Block ` for the input field.
-            //     if (commanderAppOptions.keys.indexOf(e.code.toLowerCase()) !== -1) {
-            //         return false;
-            //     }
-            //     return true;
-            // }));
 
             // Loading the menu content once.
             if (commanderApp.json === '') {
@@ -182,7 +185,7 @@ define(['jquery', 'core/notification'], function($, notification) {
             // Set holders.
             commanderApp.$mainModal = $('#local_commander_modal');
 
-            $(document).on('keydown', function(e) {
+            $(window).on('keydown', function(e) {
                 var keyboardCode = e.code.toLowerCase();
                 commanderApp.log('Pressed:', keyboardCode);
                 commanderApp.log('Show:', commanderApp.isShow);
@@ -311,7 +314,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * Scroll to active item.
          */
         scrollTo: function() {
-            $('#local_commander_modal .local_commander-body div').scrollTo('#local_commander_modal ul li.active', 200);
+            $('#local_commander_modal .local_commander-body div').scrollTo('#local_commander_modal li.active', 200);
         },
 
         /**
