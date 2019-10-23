@@ -31,7 +31,7 @@ Types of changes
 
 ## [3.8.0] - 2019-10-13
 ### Added
-- Add keycode helper to the setting menu
+- Add new KeyboardEvent support (e.keyCode is deprecated)
 - Allows multiple trigger keys
 - Update version number, no issues founded in Moodle 3.8
 - Prevent display commander when we are in an editable area.
