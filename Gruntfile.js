@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 
     // We need to include the core Moodle grunt file too, otherwise we can't run tasks like "amd".
     require("grunt-load-gruntfile")(grunt);
-    grunt.loadGruntfile("/Users/mail/OPENSOURCE/moodle-380/Gruntfile.js");
+    grunt.loadGruntfile("../../Gruntfile.js");
 
     //Load all grunt tasks.
     grunt.loadNpmTasks("grunt-contrib-less");
