@@ -38,7 +38,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_keycode('local_commander/keys',
         new lang_string('setting:keys', 'local_commander'),
         new lang_string('setting:keys_desc', 'local_commander'),
-        'backquote,intlbackslash', PARAM_TEXT));
+        '192', PARAM_TEXT));
 
     $ADMIN->add('localplugins', $settings);
 }

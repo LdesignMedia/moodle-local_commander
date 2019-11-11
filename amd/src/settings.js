@@ -55,7 +55,7 @@ define(['jquery', 'core/str'], function($, str) {
          * Init
          */
         init: function() {
-            var $el = $('#id_s_local_commander_key1');
+            var $el = $('#id_s_local_commander_keys');
 
             if ($el.length === 0) {
                 return;
@@ -72,12 +72,11 @@ define(['jquery', 'core/str'], function($, str) {
                     commanderSettings.log('Hide when we are in an editable element');
                     return;
                 }
-                // @TODO check if its supported by edge.
-                $('#key-monitor div').text('key = ' + e.key + ' | code = ' + e.code.toLowerCase());
+
+                var keyboardCode = e.keyCode || e.which;
+                $('#key-monitor div').text('key = ' + e.key + ' | code = ' + keyboardCode);
             });
-
         }
-
     };
 
     return {
@@ -91,7 +90,7 @@ define(['jquery', 'core/str'], function($, str) {
              * Wait for jQuery
              */
             $(document).ready(function() {
-                commanderSettings.log('ready() - setting local commander v3.8.0');
+                commanderSettings.log('ready() - setting local commander v3.8.1');
                 commanderSettings.init();
             });
         }

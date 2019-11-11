@@ -30,6 +30,9 @@
 define(['jquery', 'core/notification'], function($, notification) {
     'use strict';
 
+    // Keyboard codes.
+    var ESCAPE = 27,ENTER = 13, ARROWUP = 38, ARROWDOWN = 40;
+
     // Fix scrolling.
     $.fn.scrollTo = function(elem, speed) {
         $(this).stop().animate({
@@ -154,13 +157,14 @@ define(['jquery', 'core/notification'], function($, notification) {
 
             // Search set some timeout optimize speed.
             commanderApp.$mainModalCommand.on('keydown', function(e) {
-                var keyboardCode = e.code.toLowerCase();
+                var keyboardCode = e.keyCode || e.which;
+                commanderApp.log('Code pressed:' , keyboardCode);
 
                 switch (keyboardCode) {
-                    case 'escape':
-                    case 'enter':
-                    case 'arrowup':
-                    case 'arrowdown':
+                    case ESCAPE:
+                    case ENTER:
+                    case ARROWUP:
+                    case ARROWDOWN:
                         return;
                 }
 
@@ -186,28 +190,29 @@ define(['jquery', 'core/notification'], function($, notification) {
             commanderApp.$mainModal = $('#local_commander_modal');
 
             $(window).on('keydown', function(e) {
-                var keyboardCode = e.code.toLowerCase();
-                commanderApp.log('Pressed:', keyboardCode);
+
+                var keyboardCode = e.keyCode || e.which;
+                commanderApp.log('Code pressed:' , keyboardCode);
                 commanderApp.log('Show:', commanderApp.isShow);
 
                 // Check for arrow keys.
                 if (commanderApp.isShow) {
                     switch (keyboardCode) {
-                        case 'escape':
+                        case ESCAPE:
                             commanderApp.hide();
                             break;
 
-                        case 'enter':
+                        case ENTER:
                             e.preventDefault();
                             commanderApp.goToCommand();
                             break;
 
-                        case 'arrowup':
+                        case ARROWUP:
                             e.preventDefault();
                             commanderApp.arrowUp();
                             break;
 
-                        case 'arrowdown':
+                        case ARROWDOWN:
                             e.preventDefault();
                             commanderApp.arrowDown();
                             break;
@@ -215,7 +220,7 @@ define(['jquery', 'core/notification'], function($, notification) {
                     return;
                 }
 
-                if (commanderAppOptions.keys.indexOf(keyboardCode) !== -1) {
+                if (commanderAppOptions.keys.indexOf(keyboardCode.toString()) !== -1) {
                     e.preventDefault();
                     commanderApp.log('Commander keyboard key triggered');
 
@@ -514,7 +519,7 @@ define(['jquery', 'core/notification'], function($, notification) {
              * Wait for jQuery
              */
             $(document).ready(function() {
-                commanderApp.log('ready() - local commander v3.80', commanderAppOptions);
+                commanderApp.log('ready() - local commander v3.81', commanderAppOptions);
                 commanderApp.start();
             });
         }

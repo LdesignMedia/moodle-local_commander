@@ -37,7 +37,7 @@ $string['js:error_parsing'] = 'Error parsing';
 $string['js:keycode_help'] = 'KeyboardEvent.code helper (press a keyboard key to see its code)';
 
 // Settings.
-$string['setting:keys'] = 'KeyboardEvent.code';
+$string['setting:keys'] = 'KeyboardEvent';
 $string['setting:keys_desc'] = 'The default keyboard shortcut is the <b>` Backquote</b> (above the TAB).';
 
 // Errors.
