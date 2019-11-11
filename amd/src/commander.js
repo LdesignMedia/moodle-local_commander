@@ -31,7 +31,10 @@ define(['jquery', 'core/notification'], function($, notification) {
     'use strict';
 
     // Keyboard codes.
-    var ESCAPE = 27,ENTER = 13, ARROWUP = 38, ARROWDOWN = 40;
+    var ESCAPE = 27,
+        ENTER = 13,
+        ARROWUP = 38,
+        ARROWDOWN = 40;
 
     // Fix scrolling.
     $.fn.scrollTo = function(elem, speed) {
@@ -158,7 +161,7 @@ define(['jquery', 'core/notification'], function($, notification) {
             // Search set some timeout optimize speed.
             commanderApp.$mainModalCommand.on('keydown', function(e) {
                 var keyboardCode = e.keyCode || e.which;
-                commanderApp.log('Code pressed:' , keyboardCode);
+                commanderApp.log('Code pressed:', keyboardCode);
 
                 switch (keyboardCode) {
                     case ESCAPE:
@@ -192,7 +195,7 @@ define(['jquery', 'core/notification'], function($, notification) {
             $(window).on('keydown', function(e) {
 
                 var keyboardCode = e.keyCode || e.which;
-                commanderApp.log('Code pressed:' , keyboardCode);
+                commanderApp.log('Code pressed:', keyboardCode);
                 commanderApp.log('Show:', commanderApp.isShow);
 
                 // Check for arrow keys.
