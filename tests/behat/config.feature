@@ -31,4 +31,4 @@ Feature: Manager can use local commander search tool
     Given I log in as "admin"
     And I navigate to "Plugins > Local plugins > Commander / Quick navigation" in site administration
     And I press "Save changes"
-    Then the field "s_local_commander_key1" matches value "192"
+    Then the field "s_local_commander_keys" matches value "192"
