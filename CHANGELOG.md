@@ -28,7 +28,7 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
-## Version (3.8.1) - 2019-10-11
+## Version (3.8.1) - 2019-11-11
 ### Fixed
 - Issue with e.code not supported in all browsers.
 
