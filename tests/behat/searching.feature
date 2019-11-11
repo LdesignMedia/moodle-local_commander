@@ -48,6 +48,7 @@ Feature: Can use local commander search tool
   @javascript
   Scenario: Open local_commander as teacher
     When I log in as "teacher1"
+    And I am on homepage
     And I follow "Course 1"
     And I press key "192" in "body" "css_element"
     Then I should see "speed up your Moodling"
