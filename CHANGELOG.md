@@ -28,8 +28,11 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
+## Version (3.8.1) - 2019-10-11
+### Fixed
+- Issue with e.code not supported in all browsers.
 
-## [3.8.0] - 2019-10-13
+## Version (3.8.0) - 2019-10-13
 ### Added
 - Add new KeyboardEvent support (e.keyCode is deprecated)
 - Allows multiple trigger keys
@@ -37,7 +40,7 @@ Types of changes
 - Prevent display commander when we are in an editable area.
 - Changelog moved to a separate file
 
-## [1.2.7] - 2019-05-20
+## Version (1.2.7) - 2019-05-20
 ### Added
 - Release of the first official version.
 - Travis tests
