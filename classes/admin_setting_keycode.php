@@ -41,10 +41,7 @@ class admin_setting_keycode extends \admin_setting_configtext {
     /**
      * @var array
      */
-    protected $allowed = [
-
-    ];
-
+    protected $allowed = [];
 
     /**
      * Validate data before storage
@@ -54,15 +51,12 @@ class admin_setting_keycode extends \admin_setting_configtext {
      * @return mixed true if ok string if error found
      */
     public function validate($data) {
-        // allow paramtype to be a custom regex if it is the form of /pattern/
-
         $status = parent::validate($data);
         if (!$status) {
             return $status;
         }
 
-        // @TODO add keycode validation.
-
+        // TODO Add keycode validation.
         return true;
     }
 
@@ -71,7 +65,7 @@ class admin_setting_keycode extends \admin_setting_configtext {
             // do not complain if '' used instead of 0
             $data = 0;
         }
-        // $data is a string
+
         $validated = $this->validate($data);
         if ($validated !== true) {
             return $validated;
@@ -91,5 +85,4 @@ class admin_setting_keycode extends \admin_setting_configtext {
     private function clean(string $data) {
         return trim(str_replace(' ', '', strtolower($data)));
     }
-
 }
