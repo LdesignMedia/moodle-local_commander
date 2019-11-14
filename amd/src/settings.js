@@ -26,7 +26,7 @@
  **/
 /* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
 /* eslint-disable no-invalid-this */
-define(['jquery', 'core/str'], function($, str) {
+define(['jquery', 'core/str', 'core/notification'], function($, str, Notification) {
     'use strict';
 
     /**
@@ -63,7 +63,7 @@ define(['jquery', 'core/str'], function($, str) {
 
             str.get_string('js:keycode_help', 'local_commander').then(function(message) {
                 $el.before('<div class="alert alert-info" id="key-monitor"><b>' + message + '</b><div></div></div>');
-            });
+            }).fail(Notification.exception);
 
             $(document).on('keydown', function(e) {
 
