@@ -29,7 +29,7 @@ Feature: Can use local commander search tool
   Background:
     Given the following "courses" exist:
       | fullname | shortname | format | enablecompletion |
-      | Course 1 | C1        | topics | 1                |
+      | Course1 | C1        | topics | 1                |
     And the following "users" exist:
       | username |
       | teacher1 |
@@ -49,6 +49,6 @@ Feature: Can use local commander search tool
   Scenario: Open local_commander as teacher
     When I log in as "teacher1"
     And I am on homepage
-    And I follow "Course 1"
+    And I follow "Course1"
     And I press key "192" in "body" "css_element"
     Then I should see "speed up your Moodling"

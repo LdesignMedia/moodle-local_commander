@@ -60,9 +60,16 @@ class admin_setting_keycode extends \admin_setting_configtext {
         return true;
     }
 
+    /**
+     * Write_setting
+     *
+     * @param $data
+     *
+     * @return mixed|string
+     * @throws \coding_exception
+     */
     public function write_setting($data) {
         if ($this->paramtype === PARAM_INT and $data === '') {
-            // do not complain if '' used instead of 0
             $data = 0;
         }
 
@@ -78,6 +85,8 @@ class admin_setting_keycode extends \admin_setting_configtext {
     }
 
     /**
+     * clean
+     *
      * @param string $data
      *
      * @return string

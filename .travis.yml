@@ -25,12 +25,14 @@ cache:
 matrix:
   include:
     # PHP 7.0
-#    - php: 7.0
-#      env: DB=pgsql  MOODLE_BRANCH=MOODLE_33_STABLE
+    - php: 7.0
+      env: DB=pgsql  MOODLE_BRANCH=MOODLE_33_STABLE
     - php: 7.0
       env: DB=mysqli MOODLE_BRANCH=MOODLE_35_STABLE
     - php: 7.2
       env: DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
+    - php: 7.2
+      env: DB=pgsql MOODLE_BRANCH=MASTER
 
 before_install:
   - export MOODLE_VERSION=$(echo "$MOODLE_BRANCH" | cut -d'_' -f 2)
@@ -55,6 +57,6 @@ script:
   - moodle-plugin-ci codechecker
   - moodle-plugin-ci savepoints
   - moodle-plugin-ci mustache
-  - moodle-plugin-ci grunt
+  - moodle-plugin-ci grunt || false
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat
