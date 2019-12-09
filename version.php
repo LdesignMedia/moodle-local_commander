@@ -24,7 +24,7 @@
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
-$plugin->release   = '3.8.1 (2019120900)';
+$plugin->release   = '3.8.2 (2019120900)';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->version   = 2019120900;// The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2015111602;        // Requires this Moodle version.
