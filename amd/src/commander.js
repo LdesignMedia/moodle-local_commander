@@ -224,7 +224,7 @@ define(['jquery', 'core/notification'], function($, notification) {
                 }
 
                 if (commanderAppOptions.keys.indexOf(keyboardCode.toString()) !== -1) {
-                    e.preventDefault();
+
                     commanderApp.log('Commander keyboard key triggered');
 
                     // Validate we not triggered in an editable area.
@@ -233,6 +233,8 @@ define(['jquery', 'core/notification'], function($, notification) {
                         commanderApp.log('Hide when we are in an editable element');
                         return;
                     }
+
+                    e.preventDefault();
 
                     // Only render if needed.
                     if (commanderApp.$mainModal.length == 0) {
