@@ -45,7 +45,6 @@ if ($courseid > 0) {
     $PAGE->set_course($course);
 }
 
+// TODO Move to an external service.
 $navigation = new \local_commander\navigation($PAGE, $courseid);
 echo $navigation->get_menu_for_js();
-
-ajax_check_captured_output();
