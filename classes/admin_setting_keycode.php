@@ -52,12 +52,19 @@ class admin_setting_keycode extends \admin_setting_configtext {
      */
     public function validate($data) {
         $status = parent::validate($data);
-        if (!$status) {
-            return $status;
+
+        $keycodes = explode(',', $data);
+        foreach($keycodes as $keycode) {
+
+            if (is_numeric($keycode)) {
+                continue;
+            }
+
+            // Wrong format used.
+            $status = false;
         }
 
-        // TODO Add keycode validation.
-        return true;
+        return $status;
     }
 
     /**
