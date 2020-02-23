@@ -90,7 +90,7 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
              * Wait for jQuery
              */
             $(document).ready(function() {
-                commanderSettings.log('ready() - setting local commander v3.8.1');
+                commanderSettings.log('ready() - setting local commander v3.82');
                 commanderSettings.init();
             });
         }

@@ -43,6 +43,7 @@ $PAGE->set_url('/local/commander/ajax.php');
 if ($courseid > 0) {
     $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
     $PAGE->set_course($course);
+    $PAGE->set_context(context_course::instance($courseid));
 }
 
 // TODO Move to an external service.

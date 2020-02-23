@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * JS to show the popup and interact with it.
+ * JS to  the popup and interact with it.
  *
  *
  * Tested in Moodle 3.8
@@ -121,9 +121,9 @@ define(['jquery', 'core/notification'], function($, notification) {
         log: function() {
             "use strict";
 
-            // Check if we can show the log.
+            // Check if we can  the log.
             try {
-                // TODO Only show if debugging enabled in cfg.
+                // TODO Only  if debugging enabled in cfg.
                 console.log.apply(console, arguments);
             } catch (exc) {
                 throw exc;
@@ -196,7 +196,8 @@ define(['jquery', 'core/notification'], function($, notification) {
 
                 var keyboardCode = e.keyCode || e.which;
                 commanderApp.log('Code pressed:', keyboardCode);
-                commanderApp.log('Show:', commanderApp.isShow);
+                commanderApp.log('Trigger keys:', commanderAppOptions.keys);
+                commanderApp.log('Commander is visible:', commanderApp.isShow);
 
                 // Check for arrow keys.
                 if (commanderApp.isShow) {
@@ -350,6 +351,7 @@ define(['jquery', 'core/notification'], function($, notification) {
         loadMenu: function() {
             "use strict";
 
+            // TODO use the default webservice from Moodle instead.
             $.ajax({
                 url: M.cfg.wwwroot + '/local/commander/ajax.php',
                 method: "GET",
@@ -524,7 +526,7 @@ define(['jquery', 'core/notification'], function($, notification) {
              * Wait for jQuery
              */
             $(document).ready(function() {
-                commanderApp.log('ready() - local commander v3.81', commanderAppOptions);
+                commanderApp.log('ready() - local commander v3.82', commanderAppOptions);
                 commanderApp.start();
             });
         }
