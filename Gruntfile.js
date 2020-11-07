@@ -7,10 +7,17 @@ module.exports = function (grunt) {
     // grunt --moodledir=/Users/mail/OPENSOURCE/moodle-370/
 
     // We need to include the core Moodle grunt file too, otherwise we can't run tasks like "amd".
-    require("grunt-load-gruntfile")(grunt);
+    try {
+        if(require.resolve("grunt-load-gruntfile")){
+            require("grunt-load-gruntfile")(grunt);
+        }
 
-    var MOODLE_DIR = grunt.option('moodledir') || '../../';
-    grunt.loadGruntfile(MOODLE_DIR + "Gruntfile.js");
+        var MOODLE_DIR = grunt.option('moodledir') || '../../';
+        grunt.loadGruntfile(MOODLE_DIR + "Gruntfile.js");
+
+    }catch(ex){
+        // Only used when running localy for compiling.
+    }
 
     //Load all grunt tasks.
     grunt.loadNpmTasks("grunt-contrib-less");
@@ -19,6 +26,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-fixindent");
 
     grunt.initConfig({
+        babel: {
+            options: {
+                sourceMap: true,
+                presets: ['@babel/preset-env']
+            },
+            dist: {
+                files: {
+                }
+            }
+        },
         watch: {
             // If any .less file changes in directory "less" then run the "less" task.
             less: {

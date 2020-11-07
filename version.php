@@ -19,13 +19,13 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package local_commander
+ * @package   local_commander
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
-$plugin->release   = '3.9.0 (2020061500)';
+$plugin->release = '3.10.0 (2020110700)';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->version   = 2020061500;// The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2015111602;        // Requires this Moodle version.
+$plugin->version = 2020110700; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2015111602; // Requires this Moodle version.
 $plugin->component = 'local_commander'; // Full name of the plugin (used for diagnostics).

@@ -26,11 +26,11 @@
 
 namespace local_commander;
 
+use action_link;
+use moodle_url;
 use navigation_cache;
 use navigation_node;
 use navigation_node_collection;
-use moodle_url;
-use action_link;
 use settings_navigation_ajax;
 
 defined('MOODLE_INTERNAL') || die();
@@ -103,25 +103,26 @@ class navigation extends settings_navigation_ajax {
     }
 
     /**
-     * Recusively converts a child node and its children to XML for output.
+     * Recursively converts a child node and its children to XML for output.
      *
      * @param navigation_node $child The child to convert
-     * @param int $depth Pointlessly used to track the depth of the XML structure
+     * @param int             $depth Pointlessly used to track the depth of the XML structure
      *
-     * @return string JSON
+     * @return array
      */
-    protected function convert($child, $depth = 1) {
+    protected function convert($child, int $depth = 1) : array {
+
+        $attributes = [];
 
         // Make sure correct child type is used.
         if (!$child instanceof navigation_node) {
-            return '';
+            return $attributes;
         }
 
         if (!$child->display) {
-            return '';
+            return $attributes;
         }
 
-        $attributes = [];
         $attributes['id'] = $child->id;
         $attributes['name'] = (string)$child->text; // This can be lang_string object so typecast it.
         $attributes['link'] = '#';
@@ -133,6 +134,7 @@ class navigation extends settings_navigation_ajax {
         } else if ($child->action instanceof action_link) {
             $attributes['link'] = $child->action->url->out();
         }
+
         $attributes['hidden'] = ($child->hidden);
         $attributes['haschildren'] = ($child->children->count() > 0 || $child->type == navigation_node::TYPE_CATEGORY);
         $attributes['haschildren'] = $attributes['haschildren'] || $child->type == navigation_node::TYPE_MY_CATEGORY;

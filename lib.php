@@ -29,6 +29,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
+ * local_commander_get_trigger_keys
+ *
  * @return array
  * @throws dml_exception
  */
