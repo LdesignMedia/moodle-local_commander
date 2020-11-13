@@ -46,7 +46,7 @@ class admin_setting_keycode extends \admin_setting_configtext {
     /**
      * Validate data before storage
      *
-     * @param string data
+     * @param string $data
      *
      * @return mixed true if ok string if error found
      */
@@ -54,7 +54,7 @@ class admin_setting_keycode extends \admin_setting_configtext {
         $status = parent::validate($data);
 
         $keycodes = explode(',', $data);
-        foreach($keycodes as $keycode) {
+        foreach ($keycodes as $keycode) {
 
             if (is_numeric($keycode)) {
                 continue;
@@ -70,7 +70,7 @@ class admin_setting_keycode extends \admin_setting_configtext {
     /**
      * Write_setting
      *
-     * @param $data
+     * @param string $data
      *
      * @return mixed|string
      * @throws \coding_exception

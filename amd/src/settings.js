@@ -55,7 +55,7 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
          * Init
          */
         init: function() {
-            var $el = $('#id_s_local_commander_keys');
+            let $el = $('#id_s_local_commander_keys');
 
             if ($el.length === 0) {
                 return;
@@ -63,6 +63,7 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
 
             str.get_string('js:keycode_help', 'local_commander').then(function(message) {
                 $el.before('<div class="alert alert-info" id="key-monitor"><b>' + message + '</b><div></div></div>');
+                return message;
             }).fail(Notification.exception);
 
             $(document).on('keydown', function(e) {
@@ -73,7 +74,7 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
                     return;
                 }
 
-                var keyboardCode = e.keyCode || e.which;
+                let keyboardCode = e.keyCode || e.which;
                 $('#key-monitor div').text('key = ' + e.key + ' | code = ' + keyboardCode);
             });
         }
