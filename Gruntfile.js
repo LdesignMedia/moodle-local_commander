@@ -1,10 +1,13 @@
+/* browser: false */
+/* eslint-env node */
 "use strict";
 
 module.exports = function (grunt) {
     // Running local with
     // First time npm install
-    // nvm use 8.9
-    // grunt --moodledir=/Users/mail/OPENSOURCE/moodle-370/
+    // nvm use 14
+    // grunt --moodledir=/Users/mail/OPENSOURCE/moodle-310/
+    // grunt --moodledir=../../..
 
     // We need to include the core Moodle grunt file too, otherwise we can't run tasks like "amd".
     try {
