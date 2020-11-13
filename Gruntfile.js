@@ -51,6 +51,11 @@ module.exports = function (grunt) {
                 tasks: ["amd"]
             }
         },
+        stylelint: {
+            css: {},
+            scss: {},
+            less: {},
+        },
         less: {
             // Production config is also available.
             development: {
