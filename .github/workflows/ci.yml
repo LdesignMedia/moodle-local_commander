@@ -1,18 +1,17 @@
-name: Run all tests
+name: Moodle Plugin CI
 
-# Run this workflow every time a new commit pushed to your repository
 on: [push, pull_request]
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-18.04
+
     services:
       postgres:
         image: postgres:10
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
-        # Health check to wait for postgres to start.
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
@@ -24,68 +23,77 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
+
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.3', '7.4']
-        database: ['pgsql', 'mariadb']
+        include:
+          - php: '7.4'
+            moodle-branch: 'MOODLE_311_STABLE'
+            database: pgsql
+          - php: '7.4'
+            moodle-branch: 'MOODLE_310_STABLE'
+            database: mariadb
+          - php: '7.3'
+            moodle-branch: 'MOODLE_39_STABLE'
+            database: pgsql
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
         with:
-          # Clone in plugin subdir, so we can setup CI in default directory.
           path: plugin
 
-      - name: Install node
-        uses: actions/setup-node@v1
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
         with:
-          # TODO: Check if we can support .nvmrc
-          node-version: '14.15.0'
+          php-version: ${{ matrix.php }}
+          extensions: ${{ matrix.extensions }}
+          ini-values: max_input_vars=5000
+          coverage: none
 
-      - name: Setup PHP environment
-        uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, pgsql, mysqli
-          tools: phpunit
-
-      - name: Deploy moodle-plugin-ci
+      - name: Initialise moodle-plugin-ci
         run: |
           composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
-          # Add dirs to $PATH
           echo $(cd ci/bin; pwd) >> $GITHUB_PATH
           echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
-          # PHPUnit depends on en_AU.UTF-8 locale
           sudo locale-gen en_AU.UTF-8
+          echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
+
       - name: Install moodle-plugin-ci
-        # Need explicit IP to stop mysql client fail on attempt to use unix socket.
-        run: moodle-plugin-ci install -vvv --plugin ./plugin --db-host=127.0.0.1
+        run: |
+          moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
         env:
           DB: ${{ matrix.database }}
-          # TODO: Omitted MOODLE_BRANCH results in regex failure, investigate.
-          MOODLE_BRANCH: 'master'
+          MOODLE_BRANCH: ${{ matrix.moodle-branch }}
 
-      - name: Run phplint
+      - name: PHP Lint
         if: ${{ always() }}
         run: moodle-plugin-ci phplint
 
-      - name: Run phpcpd
+      - name: PHP Copy/Paste Detector
+        continue-on-error: true # This step will show errors but will not fail
         if: ${{ always() }}
-        run: moodle-plugin-ci phpcpd || true
+        run: moodle-plugin-ci phpcpd
 
-      - name: Run phpmd
+      - name: PHP Mess Detector
+        continue-on-error: true # This step will show errors but will not fail
         if: ${{ always() }}
         run: moodle-plugin-ci phpmd
 
-      - name: Run codechecker
+      - name: Moodle Code Checker
         if: ${{ always() }}
-        run: moodle-plugin-ci codechecker
+        run: moodle-plugin-ci codechecker --max-warnings 0
 
-      - name: Run validate
+      - name: Moodle PHPDoc Checker
+        if: ${{ always() }}
+        run: moodle-plugin-ci phpdoc
+
+      - name: Validating
         if: ${{ always() }}
         run: moodle-plugin-ci validate
 
-      - name: Run savepoints
+      - name: Check upgrade savepoints
         if: ${{ always() }}
         run: moodle-plugin-ci savepoints
 
@@ -97,17 +105,18 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci grunt --max-lint-warnings 0
 
-      - name: Run phpdoc
+      - name: PHPUnit tests
         if: ${{ always() }}
-        run: moodle-plugin-ci phpdoc
+        run: moodle-plugin-ci phpunit
 
-      - name: Run phpunit
+      - name: Core privacy tests
         if: ${{ always() }}
         run: |
-          moodle-plugin-ci phpunit
           cd moodle
-          vendor/bin/phpunit --fail-on-risky --disallow-test-output --filter tool_dataprivacy_metadata_registry_testcase
-          vendor/bin/phpunit --fail-on-risky --disallow-test-output --testsuite core_privacy_testsuite --filter provider_testcase
-      - name: Run behat
+          php admin/tool/phpunit/cli/init.php
+          vendor/bin/phpunit --fail-on-risky --disallow-test-output -v --filter tool_dataprivacy_metadata_registry_testcase
+          vendor/bin/phpunit --fail-on-risky --disallow-test-output -v --filter provider_testcase
+
+      - name: Behat features
         if: ${{ always() }}
         run: moodle-plugin-ci behat --profile chrome
