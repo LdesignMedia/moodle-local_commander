@@ -24,6 +24,8 @@
  * @author    Luuk Verhoeven
  **/
 
+use local_commander\navigation;
+
 define('AJAX_SCRIPT', true);
 require_once(__DIR__ . '/../../config.php');
 
@@ -47,5 +49,5 @@ if ($courseid > 0) {
 }
 
 // TODO Move to an external service.
-$navigation = new \local_commander\navigation($PAGE, $courseid);
+$navigation = new navigation($PAGE, $courseid);
 echo $navigation->get_menu_for_js();
