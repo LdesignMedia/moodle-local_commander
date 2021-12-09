@@ -24,8 +24,9 @@
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
-$plugin->release = '3.11.0 (2021092700)';
+
+$plugin->release = '3.11.0 (2021120900)';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->version = 2021092700; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2015111602; // Requires this Moodle version.
-$plugin->component = 'local_commander'; // Full name of the plugin (used for diagnostics).
+$plugin->version = 2021120900;
+$plugin->requires = 2015111602;
+$plugin->component = 'local_commander';
