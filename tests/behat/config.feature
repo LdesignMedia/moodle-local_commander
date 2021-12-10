@@ -20,15 +20,16 @@
 # @author    Luuk Verhoeven
 # @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
-@local @local_commander @_only_local
-Feature: Manager can use local commander search tool
-  In order to use the local commander in Moodle
-  As an admin
-  I have to be able save settings
-
-  @javascript
-  Scenario: Open local_commander
-    Given I log in as "admin"
-    And I navigate to "Plugins > Local plugins > Commander / Quick navigation" in site administration
-    And I press "Save changes"
-    Then the field "s_local_commander_keys" matches value "192"
+#@local @local_commander @_only_local
+#Feature: Manager can use local commander search tool
+#  In order to use the local commander in Moodle
+#  As an admin
+#  I have to be able save settings
+#
+#  @javascript
+#  Scenario: Open local_commander
+#    Given I log in as "admin"
+#    And I navigate to "Plugins > Local plugins > Commander / Quick navigation" in site administration
+#    And I set the field "s_local_commander_keys" to "13"
+#    And I press "Save changes"
+#    Then the field "s_local_commander_keys" matches value "13"
