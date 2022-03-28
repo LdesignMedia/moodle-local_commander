@@ -26,8 +26,6 @@
  * @author    Luuk Verhoeven
  **/
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * local_commander_get_trigger_keys
  *

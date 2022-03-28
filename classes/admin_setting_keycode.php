@@ -25,7 +25,6 @@
  **/
 
 namespace local_commander;
-defined('MOODLE_INTERNAL') || die;
 
 /**
  * Class admin_setting_keycode

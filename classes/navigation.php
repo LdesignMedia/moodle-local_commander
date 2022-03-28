@@ -33,8 +33,6 @@ use navigation_node;
 use navigation_node_collection;
 use settings_navigation_ajax;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Class navigation
  *

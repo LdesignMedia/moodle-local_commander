@@ -25,8 +25,6 @@
 
 namespace local_commander\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * GDPR provider
  *
