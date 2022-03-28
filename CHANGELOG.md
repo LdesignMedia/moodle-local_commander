@@ -28,6 +28,10 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
+## Version (3.11) - 2022-03-28
+### Fix
+- `@thibault.herault` Thanks for solving issue with loading navigation.
+
 ## Version (3.11) - 2021-09-27
 ### Update
 - Moved to GitHub workflows.

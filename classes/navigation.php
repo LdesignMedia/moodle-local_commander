@@ -76,13 +76,13 @@ class navigation extends settings_navigation_ajax {
         $this->context = $this->page->context;
         $this->load_administration_settings();
 
-        // Check if local plugins is adding node to site admin.
-        $this->load_local_plugin_settings();
-
         // Also load course.
         if ($this->courseid > 0) {
             $this->load_course_settings(true);
         }
+
+        // Check if local plugins is adding node to site admin.
+        $this->load_local_plugin_settings();
 
         $this->initialised = true;
     }
