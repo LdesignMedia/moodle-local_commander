@@ -12,13 +12,13 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 * Min. required: Moodle 3.0.x
 * Supports PHP: 7.2 
 
-[![Build Status](https://travis-ci.org/MFreakNL/moodle-local_commander.svg?branch=master)](https://travis-ci.org/MFreakNL/moodle-local_commander)
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
 ![Moodle36](https://img.shields.io/badge/moodle-3.6-brightgreen.svg)
 ![Moodle37](https://img.shields.io/badge/moodle-3.7-brightgreen.svg)
 ![Moodle38](https://img.shields.io/badge/moodle-3.8-brightgreen.svg)
 ![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg)
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
+![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
 ![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
 ![Privacy-friendly](https://img.shields.io/badge/Privacy-friendly-brightgreen.svg)
 
