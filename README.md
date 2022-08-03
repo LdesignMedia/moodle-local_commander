@@ -6,7 +6,7 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 <img src="https://moodle.org/pluginfile.php/50/local_plugins/plugin_screenshots/2037/2018-03-25_04-38-44.png" alt="Screenshot" style="width: 500px;"/>
 
 ## Author
-![MFreak.nl](http://MFreak.nl/logo_small.png)
+![MFreak.nl](http://MFreak.nl/logo_small.png) 
 
 * Author: Luuk Verhoeven, [MFreak.nl](https://MFreak.nl/)
 * Min. required: Moodle 3.9.x
