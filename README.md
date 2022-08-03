@@ -9,7 +9,7 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 ![MFreak.nl](http://MFreak.nl/logo_small.png)
 
 * Author: Luuk Verhoeven, [MFreak.nl](https://MFreak.nl/)
-* Min. required: Moodle 3.0.x
+* Min. required: Moodle 3.9.x
 * Supports PHP: 7.2 
 
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
