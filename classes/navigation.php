@@ -149,4 +149,5 @@ class navigation extends settings_navigation_ajax {
 
         return $attributes;
     }
+
 }

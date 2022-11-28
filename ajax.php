@@ -16,6 +16,7 @@
 
 /**
  * Output the possible menu options
+ * TODO rewrite to webservice / externallib.php
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -40,8 +41,6 @@ if (!has_capability('local/commander:display', $context)) {
 }
 
 $PAGE->set_context(context_system::instance());
-$PAGE->set_url('/local/commander/ajax.php');
-
 if ($courseid > 0) {
     $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
     $PAGE->set_course($course);

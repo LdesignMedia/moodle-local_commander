@@ -26,6 +26,9 @@
 
 namespace local_commander;
 
+use admin_setting_configtext;
+use coding_exception;
+
 /**
  * Class admin_setting_keycode
  *
@@ -35,7 +38,7 @@ namespace local_commander;
  * @copyright 13/10/2019 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  */
-class admin_setting_keycode extends \admin_setting_configtext {
+class admin_setting_keycode extends admin_setting_configtext {
 
     /**
      * @var array
@@ -72,7 +75,7 @@ class admin_setting_keycode extends \admin_setting_configtext {
      * @param string $data
      *
      * @return mixed|string
-     * @throws \coding_exception
+     * @throws coding_exception
      */
     public function write_setting($data) {
         if ($this->paramtype === PARAM_INT and $data === '') {
@@ -100,4 +103,5 @@ class admin_setting_keycode extends \admin_setting_configtext {
     private function clean(string $data) {
         return trim(str_replace(' ', '', strtolower($data)));
     }
+
 }
