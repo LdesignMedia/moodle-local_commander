@@ -6,12 +6,11 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 <img src="https://moodle.org/pluginfile.php/50/local_plugins/plugin_screenshots/2037/2018-03-25_04-38-44.png" alt="Screenshot" style="width: 500px;"/>
 
 ## Author
-![MFreak.nl](http://MFreak.nl/logo_small.png) 
+<img src="https://ldesignmedia.nl/themes/ldesignmedia/assets/images/logo/logo.svg" alt="ldesignmedia" height="70px">
 
-* Author: Luuk Verhoeven, [MFreak.nl](https://MFreak.nl/)
+* Luuk Verhoeven :: [Ldesign Media](https://ldesignmedia.nl/) - [luuk@ldesignmedia.nl](luuk@ldesignmedia.nl)
 * Min. required: Moodle 3.9.x
-* Supports PHP: 7.2 
-
+* Supports PHP: 7.4
 
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
 ![Moodle36](https://img.shields.io/badge/moodle-3.6-brightgreen.svg)
@@ -20,7 +19,9 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 ![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg)
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
 ![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
-![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
+![Moodle40](https://img.shields.io/badge/moodle-4.0-brightgreen.svg)
+![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg)
+![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 ![Privacy-friendly](https://img.shields.io/badge/Privacy-friendly-brightgreen.svg)
 
 ## Description
@@ -44,7 +45,7 @@ Just press ` (above the TAB key) to bring up the **commander**. Use the UP and D
 
 ## Security
 
-If you discover any security related issues, please email [luuk@MFreak.nl](mailto:luuk@MFreak.nl) instead of using the issue tracker.
+If you discover any security vulnerabilities, please send an e-mail to Avetica via contact@ldesignmedia.nl
 
 ## License
 
@@ -52,4 +53,4 @@ The GNU GENERAL PUBLIC LICENSE. Please see [License File](LICENSE) for more info
 
 ## Contributing
 
-Contributions are welcome and will be fully credited. We accept contributions via Pull Requests on Github.
+Contributions are welcome and will be fully credited. We accept contributions via Pull Requests on GitHub.
