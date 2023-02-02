@@ -3,7 +3,7 @@ Commander is a command dialog inspired by PhpStorm `Action` and `oh-my-zsh`. It 
 
 The plugin will list all navigation items in a list. This list is searchable. You can use the arrow keys for navigation.
 
-<img src="https://moodle.org/pluginfile.php/50/local_plugins/plugin_screenshots/2037/2018-03-25_04-38-44.png" alt="Screenshot" style="width: 500px;"/>
+<img src="https://user-images.githubusercontent.com/995760/216366924-b50cd811-a3ab-4300-b9e8-1ec2a5adcaff.png" alt="Screenshot" style="width: 500px;"/>
 
 ## Author
 <img src="https://ldesignmedia.nl/themes/ldesignmedia/assets/images/logo/logo.svg" alt="ldesignmedia" height="70px">
