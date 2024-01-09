@@ -52,7 +52,7 @@ class navigation extends settings_navigation_ajax {
      * Constructs the navigation for use in an AJAX request
      *
      * @param \moodle_page $page
-     * @param int          $courseid
+     * @param int $courseid
      */
     public function __construct(\moodle_page &$page, $courseid = 0) {
         $this->page = $page;
@@ -94,9 +94,17 @@ class navigation extends settings_navigation_ajax {
 
         // TODO Add custom commands actions enrolling, creating course and more.
         // Convert and output the branch as JSON.
+
+        $courseadminnode = $this->get('courseadmin');
+        $courseadminnode->children->remove('users');
+        $courseadminlinks = $this->convert($courseadminnode);
+        $courseadminlinks['children'][] = $this->get_groups_links();
+
+        $rootlinks = $this->convert($this->get('root'));
+
         return json_encode([
-            'admin' => $this->convert($this->get('root')),
-            'courseadmin' => $this->convert($this->get('courseadmin')),
+            'admin' => $rootlinks,
+            'courseadmin' => $courseadminlinks,
         ]);
     }
 
@@ -104,11 +112,11 @@ class navigation extends settings_navigation_ajax {
      * Recursively converts a child node and its children to XML for output.
      *
      * @param navigation_node $child The child to convert
-     * @param int             $depth Pointlessly used to track the depth of the XML structure
+     * @param int $depth             Pointlessly used to track the depth of the XML structure
      *
      * @return array
      */
-    protected function convert($child, int $depth = 1) : array {
+    protected function convert($child, int $depth = 1): array {
 
         $attributes = [];
 
@@ -122,7 +130,7 @@ class navigation extends settings_navigation_ajax {
         }
 
         $attributes['id'] = $child->id;
-        $attributes['name'] = (string)$child->text; // This can be lang_string object so typecast it.
+        $attributes['name'] = (string) $child->text; // This can be lang_string object so typecast it.
         $attributes['link'] = '#';
 
         if (is_string($child->action)) {
@@ -148,6 +156,68 @@ class navigation extends settings_navigation_ajax {
         }
 
         return $attributes;
+    }
+
+    /**
+     * Get groups links.
+     *
+     * @return array[]
+     */
+    public function get_groups_links(): array {
+
+        $attributes = [];
+        $attributes['id'] = null;
+        $attributes['name'] = get_string('users');
+        $attributes['haschildren'] = true;
+
+        $firstchild = $this->get_child_node(
+            null,
+            get_string('groups', 'group'),
+            (new moodle_url('/group/index.php', [
+                'id' => $this->courseid,
+            ]))->out(false),
+        );
+        $firstchild['haschildren'] = true;
+
+        $firstchild['children'][] = $this->get_child_node(
+            1,
+            get_string('overview', 'group'),
+            (new moodle_url('/group/overview.php', [
+                'id' => $this->courseid,
+            ]))->out(false),
+        );
+
+        $firstchild['children'][] = $this->get_child_node(
+            2,
+            get_string('groupings', 'group'),
+            (new moodle_url('/group/groupings.php', [
+                'id' => $this->courseid,
+            ]))->out(false),
+        );
+
+        $attributes['children'][] = $firstchild;
+
+        return $attributes;
+    }
+
+    /**
+     * Get child node.
+     *
+     * @param $id
+     * @param $name
+     * @param $link
+     *
+     * @return array
+     */
+    private function get_child_node($id, $name, $link): array {
+
+        $node = ['id' => $id];
+        $node['name'] = $name;
+        $node['link'] = $link;
+        $node['haschildren'] = false;
+        $node['children'] = [];
+
+        return $node;
     }
 
 }
