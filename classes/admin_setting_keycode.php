@@ -43,7 +43,7 @@ class admin_setting_keycode extends admin_setting_configtext {
     /**
      * @var array
      */
-    protected $allowed = [];
+    protected array $allowed = [];
 
     /**
      * Validate data before storage
