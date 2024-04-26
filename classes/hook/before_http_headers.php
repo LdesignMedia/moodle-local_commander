@@ -26,6 +26,9 @@
 
 namespace local_commander\hook;
 
+use context_course;
+use context_system;
+
 /**
  * Class before_http_headers.
  *
