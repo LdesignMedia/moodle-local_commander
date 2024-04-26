@@ -32,7 +32,7 @@
  * @return array
  * @throws dml_exception
  */
-function local_commander_get_trigger_keys() : array {
+function local_commander_get_trigger_keys(): array {
     $keys = get_config('local_commander', 'keys');
 
     return explode(',', $keys);
@@ -40,33 +40,15 @@ function local_commander_get_trigger_keys() : array {
 
 /**
  * Tweak to allow JS injection from a local plugin https://docs.moodle.org/dev/Local_plugins.
- *
- * @throws coding_exception
- * @throws dml_exception
  */
-function local_commander_before_http_headers() {
-    global $COURSE, $PAGE;
-    if (isloggedin() === false) {
+function local_commander_before_http_headers(): void {
+
+    // If class exists, no more need to run from here, as hook has been implemented.
+    if (class_exists(\core\hook\output\before_http_headers::class)) {
         return;
     }
 
-    $context = empty($COURSE->id) ? context_system::instance() : context_course::instance($COURSE->id);
-    if (!has_capability('local/commander:display', $context)) {
-        return;
-    }
+    // Otherwise we call the callback from here.
+    \local_commander\hook\before_http_headers::callback();
 
-    $PAGE->requires->css('/local/commander/styles.css');
-    $arguments = [
-        'courseid' => $COURSE->id,
-        'keys' => local_commander_get_trigger_keys(),
-    ];
-
-    $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);
-
-    // TODO Using mustache template instead.
-    $PAGE->requires->strings_for_js([
-        'js:header',
-        'js:error_parsing',
-        'js:command_placeholder',
-    ], 'local_commander');
 }

@@ -13,38 +13,24 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- * Provider class
+ *  Hook callbacks.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   local_commander
- * @copyright 2018 MFreak.nl
+ * @copyright 15/04/2024 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
 
-namespace local_commander\privacy;
+defined('MOODLE_INTERNAL') || die;
 
-use core_privacy\local\metadata\null_provider;
+$callbacks = [];
 
-/**
- * GDPR provider
- *
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @package   local_commander
- * @copyright 2018 MFreak.nl
- * @author    Luuk Verhoeven
- **/
-class provider implements null_provider {
-
-    /**
-     * Get the language string identifier with the component's language file to explain why this plugin stores no data.
-     *
-     * @return  string
-     */
-    public static function get_reason() : string {
-        return 'privacy:null_reason';
-    }
-
+if (class_exists(\core\hook\output\before_http_headers::class)) {
+    $callbacks[] = [
+        'hook' => \core\hook\output\before_http_headers::class,
+        'callback' => [\local_commander\hook\before_http_headers::class, 'callback'],
+    ];
 }
