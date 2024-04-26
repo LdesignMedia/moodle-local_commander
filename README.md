@@ -12,16 +12,20 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 * Min. required: Moodle 3.9.x
 * Supports PHP: 7.4
 
-![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
-![Moodle36](https://img.shields.io/badge/moodle-3.6-brightgreen.svg)
-![Moodle37](https://img.shields.io/badge/moodle-3.7-brightgreen.svg)
-![Moodle38](https://img.shields.io/badge/moodle-3.8-brightgreen.svg)
-![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg)
-![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
-![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
-![Moodle40](https://img.shields.io/badge/moodle-4.0-brightgreen.svg)
-![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg)
-![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
+![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg?logo=moodle)
+![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg?logo=moodle)
+![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg?logo=moodle)
+![Moodle40](https://img.shields.io/badge/moodle-4.0-brightgreen.svg?logo=moodle)
+![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg?logo=moodle)
+![Moodle42](https://img.shields.io/badge/moodle-4.2-brightgreen.svg?logo=moodle)
+![Moodle43](https://img.shields.io/badge/moodle-4.3-brightgreen.svg?logo=moodle)
+![Moodle44](https://img.shields.io/badge/moodle-4.4-brightgreen.svg?logo=moodle)
+
+
+![PHP7.4](https://img.shields.io/badge/PHP-7.4-purple.svg?logo=php)
+![PHP8.0](https://img.shields.io/badge/PHP-8.0-purple.svg?logo=php)
+![PHP8.1](https://img.shields.io/badge/PHP-8.1-purple.svg?logo=php)
+
 ![Privacy-friendly](https://img.shields.io/badge/Privacy-friendly-brightgreen.svg)
 
 ## Description
