@@ -26,6 +26,11 @@
 
 namespace local_commander\hook;
 
+defined('MOODLE_INTERNAL') || die;
+
+global $CFG;
+require_once($CFG->dirroot. '/local/commander/lib.php');
+
 use context_course;
 use context_system;
 
