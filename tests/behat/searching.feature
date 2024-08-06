@@ -20,16 +20,16 @@
 # @author    Luuk Verhoeven
 # @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
-@local @local_commander @_only_local
+@local @local_commander @_only_local @javascript
 Feature: Can use local commander search tool
   In order to use the local commander in Moodle
   As an admin or teacher
-  I have to be able search in local commander
+  I have to be able to search in local commander
 
   Background:
     Given the following "courses" exist:
       | fullname | shortname | format | enablecompletion |
-      | Course1  | C1        | topics | 1                |
+      | Course 1 | C1        | topics | 1                |
     And the following "users" exist:
       | username |
       | teacher1 |
@@ -38,27 +38,21 @@ Feature: Can use local commander search tool
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
+    And the following "activities" exist:
+      | activity | course | name   |
+      | page     | C1     | Page 1 |
+      | page     | C1     | Page 2 |
+
 
   @javascript
-  Scenario: Open local_commander as admin
+  Scenario: Open local_commander
     Given I log in as "admin"
     And I navigate to "Plugins > Local plugins > Commander / Quick navigation" in site administration
-    And I set the field "s_local_commander_keys" to "13"
-    And I press "Save changes"
-    Then the field "s_local_commander_keys" matches value "13"
-
-    Then I navigate to "Plugins" in site administration
-
-    And I press the enter key
-    And I set the field "local_commander_command" to "commander"
-    And I wait "2" seconds
-    And I press the enter key
-    Then I should see "Commander / Quick navigation" in the "body" "css_element"
-
-    When I log in as "teacher1"
+    When I set the field "s_local_commander_keys" to "75"
+    And I click on "Save changes" "button"
+    Then the field "s_local_commander_keys" matches value "75"
     And I am on homepage
-    And I follow "Course1"
-    And I press the enter key
     And I wait "2" seconds
-
-    Then I should see "Speed up your Moodling" in the "body" "css_element"
+    And I press the k key
+    And I wait "2" seconds
+    And I should see "Speed up your Moodling" in the "body" "css_element"
