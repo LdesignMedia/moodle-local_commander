@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   moodle-local_commander
+ * @package   local_commander
  * @copyright 26/04/2024 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
@@ -39,7 +39,7 @@ use context_system;
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   moodle-local_commander
+ * @package   local_commander
  * @copyright 26/04/2024 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/

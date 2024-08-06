@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Output the possible menu options
- * TODO rewrite to webservice / externallib.php
+ * Output the possible menu options TODO rewrite to webservice / externallib.php
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
