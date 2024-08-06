@@ -90,22 +90,15 @@ class navigation extends settings_navigation_ajax {
      *
      * @return string
      */
-    public function get_menu_for_js() {
+    public function get_menu_for_js(): string {
 
         // TODO Add custom commands actions enrolling, creating course and more.
         // Convert and output the branch as JSON.
 
-        $courseadminnode = $this->get('courseadmin');
-        $courseadminnode->children->remove('users');
-        $courseadminlinks = $this->convert($courseadminnode);
-        $courseadminlinks['children'][] = $this->get_groups_links();
-
-        $rootlinks = $this->convert($this->get('root'));
-
         return json_encode([
-            'admin' => $rootlinks,
-            'courseadmin' => $courseadminlinks,
-        ]);
+            'admin' => $this->convert($this->get('root')),
+            'courseadmin' => $this->get_courseadmin_nodes(),
+        ], JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -142,8 +135,8 @@ class navigation extends settings_navigation_ajax {
         }
 
         $attributes['hidden'] = ($child->hidden);
-        $attributes['haschildren'] = ($child->children->count() > 0 || $child->type == navigation_node::TYPE_CATEGORY);
-        $attributes['haschildren'] = $attributes['haschildren'] || $child->type == navigation_node::TYPE_MY_CATEGORY;
+        $attributes['haschildren'] = ($child->children->count() > 0 || (int) $child->type === navigation_node::TYPE_CATEGORY);
+        $attributes['haschildren'] = $attributes['haschildren'] || (int) $child->type === navigation_node::TYPE_MY_CATEGORY;
 
         if ($child->children->count() > 0) {
             $attributes['children'] = [];
@@ -159,45 +152,52 @@ class navigation extends settings_navigation_ajax {
     }
 
     /**
-     * Get groups links.
+     * Get course admin nodes.
      *
      * @return array[]
      */
-    public function get_groups_links(): array {
+    private function get_courseadmin_nodes(): array {
 
-        $attributes = [];
-        $attributes['id'] = null;
-        $attributes['name'] = get_string('users');
-        $attributes['haschildren'] = true;
+        $courseadminnode = $this->get('courseadmin');
 
-        $firstchild = $this->get_child_node(
-            null,
-            get_string('groups', 'group'),
-            (new moodle_url('/group/index.php', [
-                'id' => $this->courseid,
-            ]))->out(false),
-        );
-        $firstchild['haschildren'] = true;
+        $nodes = $this->convert($courseadminnode);
 
-        $firstchild['children'][] = $this->get_child_node(
-            1,
-            get_string('overview', 'group'),
-            (new moodle_url('/group/overview.php', [
-                'id' => $this->courseid,
-            ]))->out(false),
-        );
+        foreach ($nodes['children'] as $key => $value) {
+            if ($value['name'] === get_string('users')) {
 
-        $firstchild['children'][] = $this->get_child_node(
-            2,
-            get_string('groupings', 'group'),
-            (new moodle_url('/group/groupings.php', [
-                'id' => $this->courseid,
-            ]))->out(false),
-        );
+                foreach ($value['children'] as $i => $child) {
 
-        $attributes['children'][] = $firstchild;
+                    if ($child['name'] === get_string('groups', 'group')) {
 
-        return $attributes;
+                        $child['children'] = [];
+
+                        $child['haschildren'] = true;
+
+                        $child['children'][] = $this->get_child_node(
+                            1,
+                            get_string('overview', 'group'),
+                            (new moodle_url('/group/overview.php', [
+                                'id' => $this->courseid,
+                            ]))->out(false),
+                        );
+                        $child['children'][] = $this->get_child_node(
+                            2,
+                            get_string('groupings', 'group'),
+                            (new moodle_url('/group/groupings.php', [
+                                'id' => $this->courseid,
+                            ]))->out(false),
+                        );
+                        $nodes['children'][$key]['children'][$i] = $child;
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+
+        return $nodes;
     }
 
     /**
