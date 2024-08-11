@@ -3,12 +3,12 @@ on: [push, pull_request]
 
 jobs:
   ci:
-    runs-on: localrunner
-    steps:
-      - uses: catalyst/catalyst-moodle-workflows/.github/workflows/ci.yml@main
-        with:
-          moodle_org_token: ${{ secrets.MOODLE_ORG_TOKEN }}
-          disable_behat: false
-          disable_grunt: false
-          release_branches: main
-          min_php: '7.4'
+    uses: catalyst/catalyst-moodle-workflows/.github/workflows/ci.yml@main
+    with:
+      moodle_org_token: ${{ secrets.MOODLE_ORG_TOKEN }}
+      disable_behat: false
+      disable_grunt: false
+      release_branches: main
+      min_php: '7.4'
+    secrets:
+      moodle_org_token: ${{ secrets.MOODLE_ORG_TOKEN }}
