@@ -203,9 +203,9 @@ class navigation extends settings_navigation_ajax {
     /**
      * Get child node.
      *
-     * @param $id
-     * @param $name
-     * @param $link
+     * @param int $id
+     * @param string $name
+     * @param string $link
      *
      * @return array
      */
