@@ -19,37 +19,18 @@
  * Tested in Moodle 3.8
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @package local_commander
  * @copyright 2019 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-/* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
 /* eslint-disable no-invalid-this */
-define(['jquery', 'core/str', 'core/notification'], function($, str, Notification) {
+define(['jquery', 'core/str', 'core/notification', 'core/log'],
+    function($, str, Notification, Log) {
     'use strict';
 
     /**
-     *
-     * @type {{}}
+     * commanderSettings
      */
-    var commanderSettings = {
-
-        /**
-         * Internal logging
-         * @param {*} val
-         */
-        log: function() {
-            "use strict";
-
-            // Check if we can show the log.
-            try {
-                // TODO Only show if debugging enabled in cfg.
-                console.log.apply(console, arguments);
-            } catch (exc) {
-                throw exc;
-            }
-        },
+    const commanderSettings = {
 
         /**
          * Init
@@ -68,9 +49,9 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
 
             $(document).on('keydown', function(e) {
 
-                if (e.target.tagName == 'INPUT' || e.target.tagName == 'SELECT'
-                    || e.target.tagName == 'TEXTAREA' || e.target.isContentEditable) {
-                    commanderSettings.log('Hide when we are in an editable element');
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT'
+                    || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                    Log.debug('Hide when we are in an editable element');
                     return;
                 }
 
@@ -91,7 +72,7 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
              * Wait for jQuery
              */
             $(document).ready(function() {
-                commanderSettings.log('ready() - setting local commander v3.82');
+                Log.debug('ready() - setting local commander v4.4');
                 commanderSettings.init();
             });
         }

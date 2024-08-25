@@ -20,14 +20,11 @@
  * Tested in Moodle 3.8
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @package local_commander
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-/* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
 /* eslint-disable no-invalid-this */
-define(['jquery', 'core/notification'], function($, notification) {
+define(['jquery', 'core/notification', 'core/log'], function($, notification, Log) {
     'use strict';
 
     // Keyboard codes.
@@ -36,7 +33,13 @@ define(['jquery', 'core/notification'], function($, notification) {
         ARROWUP = 38,
         ARROWDOWN = 40;
 
-    // Fix scrolling.
+    /**
+     * scroll to element.
+     *
+     * @param {string} elem
+     * @param {int} speed
+     * @returns {$}
+     */
     $.fn.scrollTo = function(elem, speed) {
         $(this).stop().animate({
             scrollTop: $(this).scrollTop() - $(this).offset().top + $(elem).offset().top - 10
@@ -82,7 +85,7 @@ define(['jquery', 'core/notification'], function($, notification) {
      * Commander plugin.
      * @type {{}}
      */
-    var commanderApp = {
+    const commanderApp = {
 
         /**
          * Modal jQuery element instance.
@@ -115,28 +118,12 @@ define(['jquery', 'core/notification'], function($, notification) {
         json: '',
 
         /**
-         * Internal logging
-         * @param {*} val
-         */
-        log: function() {
-            "use strict";
-
-            // Check if we can  the log.
-            try {
-                // TODO Only  if debugging enabled in cfg.
-                console.log.apply(console, arguments);
-            } catch (exc) {
-                throw exc;
-            }
-        },
-
-        /**
          * Render UI.
          */
         render: function() {
             "use strict";
             var timer = 0;
-            commanderApp.log('render UI');
+            Log.debug('render UI');
 
             // @TODO we should use mustache.
             $('body').append('<div id="local_commander_modal" class="local_commander">' +
@@ -161,7 +148,7 @@ define(['jquery', 'core/notification'], function($, notification) {
             // Search set some timeout optimize speed.
             commanderApp.$mainModalCommand.on('keydown', function(e) {
                 var keyboardCode = e.keyCode || e.which;
-                commanderApp.log('Code pressed:', keyboardCode);
+                Log.debug('Code pressed:' + keyboardCode);
 
                 switch (keyboardCode) {
                     case ESCAPE:
@@ -171,7 +158,7 @@ define(['jquery', 'core/notification'], function($, notification) {
                         return;
                 }
 
-                commanderApp.log('Searching');
+                Log.debug('Searching');
 
                 clearTimeout(timer);
                 timer = setTimeout(function() {
@@ -195,9 +182,9 @@ define(['jquery', 'core/notification'], function($, notification) {
             $(window).on('keydown', function(e) {
 
                 var keyboardCode = e.keyCode || e.which;
-                commanderApp.log('Code pressed:', keyboardCode);
-                commanderApp.log('Trigger keys:', commanderAppOptions.keys);
-                commanderApp.log('Commander is visible:', commanderApp.isShow);
+                Log.debug('Code pressed:', keyboardCode);
+                Log.debug('Trigger keys:', commanderAppOptions.keys);
+                Log.debug('Commander is visible:', commanderApp.isShow);
 
                 // Check for arrow keys.
                 if (commanderApp.isShow) {
@@ -226,12 +213,12 @@ define(['jquery', 'core/notification'], function($, notification) {
 
                 if (commanderAppOptions.keys.indexOf(keyboardCode.toString()) !== -1) {
 
-                    commanderApp.log('Commander keyboard key triggered');
+                    Log.debug('Commander keyboard key triggered');
 
                     // Validate we not triggered in an editable area.
                     if (e.target.tagName == 'INPUT' || e.target.tagName == 'SELECT'
                         || e.target.tagName == 'TEXTAREA' || e.target.isContentEditable) {
-                        commanderApp.log('Hide when we are in an editable element');
+                        Log.debug('Hide when we are in an editable element');
                         return;
                     }
 
@@ -242,7 +229,7 @@ define(['jquery', 'core/notification'], function($, notification) {
                         commanderApp.render();
                     }
 
-                    commanderApp.log('Open commander.');
+                    Log.debug('Open commander.');
 
                     if (commanderApp.isShow) {
                         commanderApp.hide();
@@ -283,7 +270,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * Action on keyboard arrow key UP.
          */
         arrowUp: function() {
-            commanderApp.log('arrowUp');
+            Log.debug('arrowUp');
             var $el = $('#local_commander_modal ul li.active'),
                 $prev = $el.closest("li").prevAll("li:visible").eq(0);
 
@@ -305,7 +292,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * Action on keyboard arrow key DOWN.
          */
         arrowDown: function() {
-            commanderApp.log('arrowDown');
+            Log.debug('arrowDown');
             var $el = $('#local_commander_modal ul li.active'),
                 $next = $el.closest("li").nextAll("li:visible").eq(0);
 
@@ -332,7 +319,7 @@ define(['jquery', 'core/notification'], function($, notification) {
          * The command that we need to execute.
          */
         goToCommand: function() {
-            commanderApp.log('goToCommand');
+            Log.debug('goToCommand');
             // Check if there is a element selected.
             // Check if the element has link.
             // TODO maybe add way to execute other type of commands.
@@ -360,7 +347,7 @@ define(['jquery', 'core/notification'], function($, notification) {
                 },
                 dataType: "json",
             }).done(function(response) {
-                commanderApp.log(response);
+                Log.debug(response);
                 commanderApp.json = response;
 
                 commanderApp.setMenu();
@@ -405,13 +392,13 @@ define(['jquery', 'core/notification'], function($, notification) {
          */
         setMenu: function() {
             "use strict";
-            commanderApp.log('setMenu() ');
+            Log.debug('setMenu() ');
 
             var html = '<div><ul>';
 
             // Only do things when needed.
             if (commanderAppOptions.courseid > 0) {
-                commanderApp.log('Has course param.');
+                Log.debug('Has course param.');
                 html += commanderApp.renderMenuItems(commanderApp.json.courseadmin, 1);
             }
 
@@ -526,7 +513,8 @@ define(['jquery', 'core/notification'], function($, notification) {
              * Wait for jQuery
              */
             $(document).ready(function() {
-                commanderApp.log('ready() - local commander v3.82', commanderAppOptions);
+                Log.debug('ready() - local commander v4.4');
+                Log.debug(commanderAppOptions);
                 commanderApp.start();
             });
         }
