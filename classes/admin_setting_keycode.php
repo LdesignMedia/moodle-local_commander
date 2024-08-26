@@ -78,7 +78,7 @@ class admin_setting_keycode extends admin_setting_configtext {
      * @throws coding_exception
      */
     public function write_setting($data) {
-        if ($this->paramtype === PARAM_INT and $data === '') {
+        if ($this->paramtype === PARAM_INT && $data === '') {
             $data = 0;
         }
 
