@@ -43,7 +43,6 @@ Feature: Can use local commander search tool
       | page     | C1     | Page 1 |
       | page     | C1     | Page 2 |
 
-
   @javascript
   Scenario: Open local_commander
     Given I log in as "admin"
