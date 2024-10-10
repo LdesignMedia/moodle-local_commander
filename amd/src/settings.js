@@ -23,7 +23,7 @@
  * @author    Luuk Verhoeven
  **/
 
-import str from 'core/str';
+import {getString} from 'core/str';
 import Notification from 'core/notification';
 import Log from 'core/log';
 
@@ -37,7 +37,7 @@ function init() {
         return;
     }
 
-    str.get_string('js:keycode_help', 'local_commander')
+    getString('js:keycode_help', 'local_commander')
         .then((message) => {
             el.insertAdjacentHTML('beforebegin', `
                 <div class="alert alert-info" id="key-monitor">

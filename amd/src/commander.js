@@ -17,9 +17,9 @@
 // This file is part of Moodle - http://moodle.org/
 // Moodle is free software: you can redistribute it and/or modify it under the terms of the GNU GPL v3 or later.
 
-// Initialize the module with imports.
 import notification from 'core/notification';
 import Log from 'core/log';
+import { uFuzzy } from 'local_commander/ufuzzy';
 
 /**
  * Keyboard key codes mapped to their respective event.key values.
@@ -72,6 +72,7 @@ const commanderApp = {
 
     /**
      * Stores all list item elements.
+     * @type {NodeListOf}
      */
     liSet: null,
 
@@ -84,6 +85,16 @@ const commanderApp = {
      * Stores the response JSON.
      */
     json: null,
+
+    /**
+     * uFuzzy instance.
+     */
+    ufuzzy: null,
+
+    /**
+     * Array of text items.
+     */
+    textItems: [],
 
     /**
      * Render the UI.
@@ -130,7 +141,7 @@ const commanderApp = {
      */
     start() {
         window.addEventListener('keydown', (e) => {
-            Log.debug(`Key pressed: ${e.key}`);
+            Log.debug(`Key pressed: ${e.keyCode}`);
             Log.debug(`Trigger keys: ${commanderAppOptions.keys}`);
             Log.debug(`Commander is visible: ${this.isShow}`);
 
@@ -159,7 +170,7 @@ const commanderApp = {
             }
 
             // Check if the pressed key is one of the trigger keys.
-            if (commanderAppOptions.keys.includes(e.key)) {
+            if (parseInt(commanderAppOptions.keys) === e.keyCode) {
                 Log.debug('Commander keyboard key triggered');
 
                 // Validate that we're not in an editable area.
@@ -298,16 +309,13 @@ const commanderApp = {
      * @param {string} query
      */
     search(query) {
-        // Normalize the query.
-        const searchTerm = query.trim().toUpperCase();
 
-        // Get all list items.
-        const listItems = Array.from(this.liSet);
+        // Normalize the query.
+        const searchTerm = query.trim();
 
         // Remove previous highlights and hide non-matching items.
-        listItems.forEach((li) => {
-            this.removeHighlight(li);
-            li.style.display = '';
+        this.liSet.forEach((li) => {
+            li.style.display = 'none';
             li.classList.remove('active');
         });
 
@@ -317,15 +325,31 @@ const commanderApp = {
 
         let firstMatch = null;
 
-        listItems.forEach((li) => {
-            const textContent = li.textContent.toUpperCase();
-            if (textContent.includes(searchTerm)) {
-                this.highlightWord(li, searchTerm);
-                if (!firstMatch) {
+        const u = this.ufuzzy;
+        const idxs = u.filter(this.textItems, query);
+        const info = u.info(idxs, this.textItems, query);
+        const orders = u.sort(info, this.textItems, query);
+
+        // Show matching items.
+        orders.forEach((order, index) => {
+            const idx = idxs[index];
+            const li = this.liSet[idx];
+            if (li) {
+                li.style.display = '';
+
+                // Highlight the first result.
+                if (firstMatch === null) {
                     firstMatch = li;
                 }
-            } else {
-                li.style.display = 'none';
+
+                try {
+                    li.querySelector('a').innerHTML = uFuzzy.highlight(
+                        li.innerText,
+                        info.ranges[index],
+                    );
+                } catch (e) {
+                    Log.error('Error highlighting text:', e);
+                }
             }
         });
 
@@ -333,24 +357,6 @@ const commanderApp = {
             firstMatch.classList.add('active');
             this.scrollToActiveItem();
         }
-    },
-
-    /**
-     * Highlight words in the menu items.
-     * @param {HTMLElement} element
-     * @param {string} word
-     */
-    highlightWord(element, word) {
-        const regex = new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        element.innerHTML = element.innerHTML.replace(regex, '<span class="highlight">$1</span>');
-    },
-
-    /**
-     * Remove highlights from an element.
-     * @param {HTMLElement} element
-     */
-    removeHighlight(element) {
-        element.innerHTML = element.textContent;
     },
 
     /**
@@ -370,10 +376,17 @@ const commanderApp = {
             html += this.renderMenuItems(this.json.admin, '');
         }
 
+        // Initialize uFuzzy with the menu items.
+        this.ufuzzy = new uFuzzy();
+
         const ulElement = this.mainModal.querySelector('.local_commander-body ul');
         ulElement.innerHTML = html;
 
         this.liSet = this.mainModal.querySelectorAll('.local_commander-body ul li');
+
+        this.liSet.forEach((li) => {
+            this.textItems.push(li.innerText);
+        });
     },
 
     /**
@@ -440,6 +453,7 @@ function init(params) {
     // Wait for the DOM to be fully loaded.
     Log.debug('Local commander v4.5.0 initialized');
     Log.debug(commanderAppOptions);
+
     commanderApp.start();
 }
 
