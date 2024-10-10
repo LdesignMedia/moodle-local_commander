@@ -52,13 +52,13 @@ function setOptions(options) {
 }
 
 /**
- * The maifn commander application.
+ * The main commander application.
  */
 const commanderApp = {
     /**
      * Modal DOM element instance.
      */
-    mainModal: false,
+    mainModal: null,
 
     /**
      * Modal background layer DOM element.
@@ -93,8 +93,8 @@ const commanderApp = {
 
         // Create the modal HTML using a template literal.
         const modalHtml = `
-            <div id="local_commander_modal" class="local_commander" role="dialog"
-             aria-modal="true" aria-labelledby="local_commander_header">
+            <div id="local_commander_modal" role="dialog" aria-modal="true"
+             aria-labelledby="local_commander_header">
                 <div class="local_commander-header">
                     <h2 id="local_commander_header">${M.util.get_string('js:header', 'local_commander')}</h2>
                 </div>
@@ -105,7 +105,7 @@ const commanderApp = {
                  placeholder="${M.util.get_string('js:command_placeholder', 'local_commander')}"
                   aria-label="${M.util.get_string('js:command_placeholder', 'local_commander')}">
             </div>
-            <div id="local_commander_back_layer" class="local_commander-backdrop"></div>
+            <div id="local_commander_back_layer"></div>
         `;
 
         // Append the modal to the body.
@@ -115,9 +115,6 @@ const commanderApp = {
         this.mainModal = document.getElementById('local_commander_modal');
         this.mainModalBackLayer = document.getElementById('local_commander_back_layer');
         this.mainModalCommand = document.getElementById('local_commander_command');
-
-        // Set the modal height.
-        this.setHeight();
 
         // Add event listeners.
         this.addEventListeners();
@@ -134,7 +131,7 @@ const commanderApp = {
     start() {
         window.addEventListener('keydown', (e) => {
             Log.debug(`Key pressed: ${e.key}`);
-
+            Log.debug(`Trigger keys: ${commanderAppOptions.keys}`);
             Log.debug(`Commander is visible: ${this.isShow}`);
 
             // Check for arrow keys when the modal is open.
@@ -290,7 +287,6 @@ const commanderApp = {
             this.json = await response.json();
             Log.debug(this.json);
             this.setMenu();
-            this.setHeight();
         } catch (error) {
             Log.error(error);
             notification.alert(M.util.get_string('js:error_parsing', 'local_commander'));
@@ -345,7 +341,7 @@ const commanderApp = {
      * @param {string} word
      */
     highlightWord(element, word) {
-        const regex = new RegExp(`(${word})`, 'gi');
+        const regex = new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
         element.innerHTML = element.innerHTML.replace(regex, '<span class="highlight">$1</span>');
     },
 
@@ -431,18 +427,6 @@ const commanderApp = {
         // Reset the menu.
         this.search('');
     },
-
-    /**
-     * Set the modal height to 50% of the viewport.
-     */
-    setHeight() {
-        const height = Math.round(window.innerHeight / 2);
-        this.mainModal.style.height = `${height}px`;
-        const bodyDiv = this.mainModal.querySelector('.local_commander-body div');
-        if (bodyDiv) {
-            bodyDiv.style.height = `${height - 100}px`;
-        }
-    },
 };
 
 /**
@@ -454,7 +438,7 @@ function init(params) {
     setOptions(params);
 
     // Wait for the DOM to be fully loaded.
-    Log.debug('DOM fully loaded - initializing commanderApp');
+    Log.debug('Local commander v4.5.0 initialized');
     Log.debug(commanderAppOptions);
     commanderApp.start();
 }
