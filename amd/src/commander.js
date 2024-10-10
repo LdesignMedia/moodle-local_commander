@@ -13,510 +13,476 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+// Initialize the module with imports.
+import notification from 'core/notification';
+import Log from 'core/log';
+
 /**
- * JS to  the popup and interact with it.
- *
- *
- * Tested in Moodle 3.8
- *
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @copyright 2018 MFreak.nl
- * @author    Luuk Verhoeven
- **/
-/* eslint-disable no-invalid-this */
-define(['jquery', 'core/notification', 'core/log'], function($, notification, Log) {
-    'use strict';
+ * Keyboard key codes.
+ */
+const ESCAPE = 27;
+const ENTER = 13;
+const ARROWUP = 38;
+const ARROWDOWN = 40;
 
-    // Keyboard codes.
-    var ESCAPE = 27,
-        ENTER = 13,
-        ARROWUP = 38,
-        ARROWDOWN = 40;
+/**
+ * Options we can set from AMD.
+ */
+const commanderAppOptions = {
+    courseid: '',
+    keys: [],
+};
 
-    /**
-     * scroll to element.
-     *
-     * @param {string} elem
-     * @param {int} speed
-     * @returns {$}
-     */
-    $.fn.scrollTo = function(elem, speed) {
-        $(this).stop().animate({
-            scrollTop: $(this).scrollTop() - $(this).offset().top + $(elem).offset().top - 10
-        }, speed == undefined ? 1000 : speed);
-        return this;
-    };
-
-    /**
-     * Options we can set from amd.
-     * @type {{selector: string, blockid: number}}
-     */
-    var commanderAppOptions = {
-        courseid: '',
-        keys: [],
-    };
-
-    /**
-     * Set options base on listed options
-     * @param {object} options
-     */
-    var setOptions = function(options) {
-        "use strict";
-        var key, vartype;
-        for (key in commanderAppOptions) {
-            if (commanderAppOptions.hasOwnProperty(key) && options.hasOwnProperty(key)) {
-
-                // Casting to prevent errors.
-                vartype = typeof commanderAppOptions[key];
-                if (vartype === "boolean") {
-                    commanderAppOptions[key] = Boolean(options[key]);
-                } else if (vartype === 'number') {
-                    commanderAppOptions[key] = Number(options[key]);
-                } else if (vartype === 'string') {
-                    commanderAppOptions[key] = String(options[key]);
-                } else {
-                    commanderAppOptions[key] = options[key];
-                }
+/**
+ * Set options based on provided parameters.
+ * @param {object} options
+ */
+function setOptions(options) {
+    Object.keys(commanderAppOptions).forEach((key) => {
+        if (options.hasOwnProperty(key)) {
+            const vartype = typeof commanderAppOptions[key];
+            if (vartype === 'boolean') {
+                commanderAppOptions[key] = Boolean(options[key]);
+            } else if (vartype === 'number') {
+                commanderAppOptions[key] = Number(options[key]);
+            } else if (vartype === 'string') {
+                commanderAppOptions[key] = String(options[key]);
+            } else {
+                commanderAppOptions[key] = options[key];
             }
         }
-    };
+    });
+}
+
+/**
+ * The main commander application.
+ */
+const commanderApp = {
+    /**
+     * Modal DOM element instance.
+     */
+    mainModal: null,
 
     /**
-     * Commander plugin.
-     * @type {{}}
+     * Modal background layer DOM element.
      */
-    const commanderApp = {
+    mainModalBackLayer: null,
 
-        /**
-         * Modal jQuery element instance.
-         */
-        $mainModal: false,
+    /**
+     * Input field element.
+     */
+    mainModalCommand: null,
 
-        /**
-         * Modal BG jQuery element instance.
-         */
-        $mainModalBackLayer: false,
+    /**
+     * Stores all list item elements.
+     */
+    liSet: null,
 
-        /**
-         * Input field
-         */
-        $mainModalCommand: false,
+    /**
+     * Flag to check if the modal is open.
+     */
+    isShow: false,
 
-        /**
-         * Stores all li elements
-         */
-        $liSet: false,
+    /**
+     * Stores the response JSON.
+     */
+    json: '',
 
-        /**
-         * Flag to check if modal is open.
-         */
-        isShow: false,
+    /**
+     * Render the UI.
+     */
+    render() {
+        let timer = 0;
+        Log.debug('Rendering UI');
 
-        /**
-         * Save response
-         */
-        json: '',
+        // Create the modal HTML.
+        const modalHtml = `
+            <div id="local_commander_modal" class="local_commander">
+                <div class="local_commander-header">
+                    <h2>${M.util.get_string('js:header', 'local_commander')}</h2>
+                </div>
+                <div class="local_commander-body">
+                    <div><ul></ul></div>
+                </div>
+                <input type="text" name="local_commander_command" id="local_commander_command"
+                 placeholder="${M.util.get_string('js:command_placeholder', 'local_commander')}">
+            </div>
+            <div id="local_commander_back_layer"></div>
+        `;
 
-        /**
-         * Render UI.
-         */
-        render: function() {
-            "use strict";
-            var timer = 0;
-            Log.debug('render UI');
+        // Append the modal to the body.
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-            // @TODO we should use mustache.
-            $('body').append('<div id="local_commander_modal" class="local_commander">' +
-                '<div class="local_commander-header"><h2>' + M.util.get_string('js:header', 'local_commander') + '</h2></div>' +
-                '<div class="local_commander-body">' +
-                '</div>' +
-                '<input type="text" name="local_commander_command" id="local_commander_command" placeholder="' +
-                M.util.get_string('js:command_placeholder', 'local_commander') + '">' +
-                '</div><div id="local_commander_back_layer"></div>');
+        // Set references to the modal elements.
+        this.mainModal = document.getElementById('local_commander_modal');
+        this.mainModalBackLayer = document.getElementById('local_commander_back_layer');
+        this.mainModalCommand = document.getElementById('local_commander_command');
 
-            // Set references.
-            commanderApp.$mainModal = $('#local_commander_modal');
-            commanderApp.$mainModalBackLayer = $('#local_commander_back_layer');
-            commanderApp.$mainModalCommand = $('#local_commander_command');
+        // Set the modal height.
+        this.setHeight();
 
-            commanderApp.setHeight();
+        // Add event listener to the background layer to hide the modal.
+        this.mainModalBackLayer.addEventListener('click', () => {
+            this.hide();
+        });
 
-            commanderApp.$mainModalBackLayer.on('click', function() {
-                commanderApp.hide();
-            });
+        // Optimize search with a timeout.
+        this.mainModalCommand.addEventListener('keydown', (e) => {
+            const keyboardCode = e.keyCode || e.which;
+            Log.debug(`Code pressed: ${keyboardCode}`);
 
-            // Search set some timeout optimize speed.
-            commanderApp.$mainModalCommand.on('keydown', function(e) {
-                var keyboardCode = e.keyCode || e.which;
-                Log.debug('Code pressed:' + keyboardCode);
+            if ([ESCAPE, ENTER, ARROWUP, ARROWDOWN].includes(keyboardCode)) {
+                return;
+            }
 
+            Log.debug('Searching');
+
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                this.search(this.mainModalCommand.value);
+            }, 100);
+        });
+
+        // Load the menu content once.
+        if (this.json === '') {
+            this.loadMenu();
+        }
+    },
+
+    /**
+     * Start the commander.
+     */
+    start() {
+        window.addEventListener('keydown', (e) => {
+            const keyboardCode = e.keyCode || e.which;
+            Log.debug(`Code pressed: ${keyboardCode}`);
+            Log.debug(`Trigger keys: ${commanderAppOptions.keys}`);
+            Log.debug(`Commander is visible: ${this.isShow}`);
+
+            // Check for arrow keys when the modal is open.
+            if (this.isShow) {
                 switch (keyboardCode) {
                     case ESCAPE:
+                        this.hide();
+                        break;
                     case ENTER:
+                        e.preventDefault();
+                        this.goToCommand();
+                        break;
                     case ARROWUP:
+                        e.preventDefault();
+                        this.arrowUp();
+                        break;
                     case ARROWDOWN:
-                        return;
+                        e.preventDefault();
+                        this.arrowDown();
+                        break;
                 }
-
-                Log.debug('Searching');
-
-                clearTimeout(timer);
-                timer = setTimeout(function() {
-                    commanderApp.search(commanderApp.$mainModalCommand.val());
-                }, 100);
-            });
-
-            // Loading the menu content once.
-            if (commanderApp.json === '') {
-                commanderApp.loadMenu();
+                return;
             }
-        },
 
-        /**
-         * Start the commander.
-         */
-        start: function() {
-            // Set holders.
-            commanderApp.$mainModal = $('#local_commander_modal');
+            // Check if the pressed key is one of the trigger keys.
+            if (commanderAppOptions.keys.includes(keyboardCode.toString())) {
+                Log.debug('Commander keyboard key triggered');
 
-            $(window).on('keydown', function(e) {
-
-                var keyboardCode = e.keyCode || e.which;
-                Log.debug('Code pressed:', keyboardCode);
-                Log.debug('Trigger keys:', commanderAppOptions.keys);
-                Log.debug('Commander is visible:', commanderApp.isShow);
-
-                // Check for arrow keys.
-                if (commanderApp.isShow) {
-                    switch (keyboardCode) {
-                        case ESCAPE:
-                            commanderApp.hide();
-                            break;
-
-                        case ENTER:
-                            e.preventDefault();
-                            commanderApp.goToCommand();
-                            break;
-
-                        case ARROWUP:
-                            e.preventDefault();
-                            commanderApp.arrowUp();
-                            break;
-
-                        case ARROWDOWN:
-                            e.preventDefault();
-                            commanderApp.arrowDown();
-                            break;
-                    }
+                // Validate that we're not in an editable area.
+                const target = e.target;
+                const tagName = target.tagName.toUpperCase();
+                if (['INPUT', 'SELECT', 'TEXTAREA'].includes(tagName) || target.isContentEditable) {
+                    Log.debug('Ignoring keypress in editable element');
                     return;
                 }
 
-                if (commanderAppOptions.keys.indexOf(keyboardCode.toString()) !== -1) {
+                e.preventDefault();
 
-                    Log.debug('Commander keyboard key triggered');
-
-                    // Validate we not triggered in an editable area.
-                    if (e.target.tagName == 'INPUT' || e.target.tagName == 'SELECT'
-                        || e.target.tagName == 'TEXTAREA' || e.target.isContentEditable) {
-                        Log.debug('Hide when we are in an editable element');
-                        return;
-                    }
-
-                    e.preventDefault();
-
-                    // Only render if needed.
-                    if (commanderApp.$mainModal.length == 0) {
-                        commanderApp.render();
-                    }
-
-                    Log.debug('Open commander.');
-
-                    if (commanderApp.isShow) {
-                        commanderApp.hide();
-                    } else {
-                        commanderApp.show();
-                    }
+                // Render the modal if it hasn't been created yet.
+                if (!this.mainModal) {
+                    this.render();
                 }
+
+                Log.debug('Opening commander');
+
+                if (this.isShow) {
+                    this.hide();
+                } else {
+                    this.show();
+                }
+            }
+        });
+    },
+
+    /**
+     * Highlight words in the menu items.
+     * @param {Node} node
+     * @param {string} word
+     */
+    highlightWord(node, word) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const pos = node.data.toUpperCase().indexOf(word);
+            if (pos >= 0) {
+                const spannode = document.createElement('span');
+                spannode.className = 'highlight';
+                const middlebit = node.splitText(pos);
+                middlebit.splitText(word.length);
+                const middleclone = middlebit.cloneNode(true);
+                spannode.appendChild(middleclone);
+                middlebit.parentNode.replaceChild(spannode, middlebit);
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE && node.childNodes && !['SCRIPT', 'STYLE'].includes(node.tagName)) {
+            node.childNodes.forEach((child) => {
+                this.highlightWord(child, word);
             });
-        },
+        }
+    },
 
-        /**
-         * Highlight words
-         *
-         * @param {object} node
-         * @param {string} word
-         */
-        highlightWord: function(node, word) {
-            if (node.nodeType == 3) {
-                var pos = node.data.toUpperCase().indexOf(word);
-                if (pos >= 0) {
-                    var spannode = document.createElement('span');
-                    spannode.className = 'highlight';
-                    spannode.style.backgroundColor = '#f4bd21';
-                    var middlebit = node.splitText(pos);
-                    var middleclone = middlebit.cloneNode(true);
-                    spannode.appendChild(middleclone);
-                    middlebit.parentNode.replaceChild(spannode, middlebit);
-                }
+    /**
+     * Navigate up in the menu.
+     */
+    arrowUp() {
+        Log.debug('Navigating up');
+        const activeItem = this.mainModal.querySelector('ul li.active');
+        let prevItem = null;
 
-            } else if (node.nodeType == 1 && node.childNodes) {
-                for (var i = 0; i < node.childNodes.length; ++i) {
-                    i += commanderApp.highlightWord(node.childNodes[i], word);
-                }
+        if (activeItem) {
+            activeItem.classList.remove('active');
+            prevItem = activeItem.previousElementSibling;
+            while (prevItem && prevItem.style.display === 'none') {
+                prevItem = prevItem.previousElementSibling;
             }
-        },
+        }
 
-        /**
-         * Action on keyboard arrow key UP.
-         */
-        arrowUp: function() {
-            Log.debug('arrowUp');
-            var $el = $('#local_commander_modal ul li.active'),
-                $prev = $el.closest("li").prevAll("li:visible").eq(0);
+        if (prevItem) {
+            prevItem.classList.add('active');
+        } else if (activeItem) {
+            activeItem.classList.add('active');
+        }
 
-            if ($el.length) {
-                $el.removeClass('active');
+        this.scrollToActiveItem();
+    },
+
+    /**
+     * Navigate down in the menu.
+     */
+    arrowDown() {
+        Log.debug('Navigating down');
+        const activeItem = this.mainModal.querySelector('ul li.active');
+        let nextItem = null;
+
+        if (activeItem) {
+            activeItem.classList.remove('active');
+            nextItem = activeItem.nextElementSibling;
+            while (nextItem && nextItem.style.display === 'none') {
+                nextItem = nextItem.nextElementSibling;
             }
+        }
 
-            if ($prev.length) {
-                $prev.addClass('active');
-            } else {
-                $el.addClass('active');
+        if (nextItem) {
+            nextItem.classList.add('active');
+        } else {
+            const items = Array.from(this.mainModal.querySelectorAll('ul li'));
+            const lastVisibleItem = items.reverse().find((item) => item.style.display !== 'none');
+            if (lastVisibleItem) {
+                lastVisibleItem.classList.add('active');
             }
+        }
 
-            //
-            commanderApp.scrollTo();
-        },
+        this.scrollToActiveItem();
+    },
 
-        /**
-         * Action on keyboard arrow key DOWN.
-         */
-        arrowDown: function() {
-            Log.debug('arrowDown');
-            var $el = $('#local_commander_modal ul li.active'),
-                $next = $el.closest("li").nextAll("li:visible").eq(0);
+    /**
+     * Scroll to the active menu item.
+     */
+    scrollToActiveItem() {
+        const container = this.mainModal.querySelector('.local_commander-body div');
+        const activeItem = this.mainModal.querySelector('li.active');
 
-            if ($el.length) {
-                $el.removeClass('active');
+        if (activeItem && container) {
+            container.scrollTop = activeItem.offsetTop - container.offsetTop - 10;
+        }
+    },
+
+    /**
+     * Execute the selected command.
+     */
+    goToCommand() {
+        Log.debug('Executing command');
+        const activeLink = this.mainModal.querySelector('ul li.active a');
+        if (activeLink) {
+            const link = activeLink.getAttribute('href');
+            if (link !== '#') {
+                window.location.href = link;
             }
-            if ($next.length) {
-                $next.addClass('active');
-            } else {
-                $('#local_commander_modal ul li:visible').last().addClass('active');
-            }
-            //
-            commanderApp.scrollTo();
-        },
+        }
+    },
 
-        /**
-         * Scroll to active item.
-         */
-        scrollTo: function() {
-            $('#local_commander_modal .local_commander-body div').scrollTo('#local_commander_modal li.active', 200);
-        },
+    /**
+     * Load the menu from the server.
+     */
+    loadMenu() {
+        fetch(`${M.cfg.wwwroot}/local/commander/ajax.php?courseid=${commanderAppOptions.courseid}`, {
+            method: 'GET',
+            credentials: 'same-origin',
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                Log.debug(data);
+                this.json = data;
 
-        /**
-         * The command that we need to execute.
-         */
-        goToCommand: function() {
-            Log.debug('goToCommand');
-            // Check if there is a element selected.
-            // Check if the element has link.
-            // TODO maybe add way to execute other type of commands.
-            var $el = $('#local_commander_modal ul li.active a');
-            if ($el) {
-                var link = $el.attr('href');
-                if (link != '#') {
-                    window.location = link;
-                }
-            }
-        },
-
-        /**
-         * Load menu
-         */
-        loadMenu: function() {
-            "use strict";
-
-            // TODO use the default webservice from Moodle instead.
-            $.ajax({
-                url: M.cfg.wwwroot + '/local/commander/ajax.php',
-                method: "GET",
-                data: {
-                    'courseid': commanderAppOptions.courseid
-                },
-                dataType: "json",
-            }).done(function(response) {
-                Log.debug(response);
-                commanderApp.json = response;
-
-                commanderApp.setMenu();
-                commanderApp.setHeight();
-            }).fail(function() {
+                this.setMenu();
+                this.setHeight();
+            })
+            .catch(() => {
                 notification.alert('js:error_parsing', 'local_commander');
             });
-        },
+    },
 
-        /**
-         * Search in the commands.
-         * @param {string} word
-         */
-        search: function(word) {
-            "use strict";
+    /**
+     * Search the menu for the input word.
+     * @param {string} word
+     */
+    search(word) {
+        // Remove active state and show all items.
+        const listItems = this.mainModal.querySelectorAll('.local_commander-body ul li');
+        listItems.forEach((li) => {
+            li.style.display = '';
+            li.classList.remove('active');
+        });
 
-            // Remove active.
-            $('.local_commander-body ul li').show();
-            commanderApp.$liSet.find('li.active').removeClass('active');
+        // Remove existing highlights.
+        const highlights = this.mainModal.querySelectorAll('.highlight');
+        highlights.forEach((span) => {
+            this.removeHighlight(span.parentNode);
+        });
 
-            // Remove highlights.
-            commanderApp.$liSet.find("span.highlight").each(function() {
-                commanderApp.removeHighlight(this.parentNode);
+        if (word !== '') {
+            const wordUpper = word.toUpperCase();
+            let firstHighlighted = null;
+
+            this.liSet.forEach((li) => {
+                this.highlightWord(li, wordUpper);
+                if (!firstHighlighted && li.querySelector('.highlight')) {
+                    firstHighlighted = li;
+                }
             });
 
-            if (word !== '') {
-
-                commanderApp.$liSet.children().each(function() {
-                    commanderApp.highlightWord(this, word.toUpperCase());
-                });
-
-                // Set active li item.
-                $('.local_commander-body span.highlight').first().parent().parent().addClass('active');
-
-                // Hide others.
-                $('.local_commander-body ul li:not(:has(span))').hide();
-            }
-        },
-
-        /**
-         * Build the ul command list.
-         */
-        setMenu: function() {
-            "use strict";
-            Log.debug('setMenu() ');
-
-            var html = '<div><ul>';
-
-            // Only do things when needed.
-            if (commanderAppOptions.courseid > 0) {
-                Log.debug('Has course param.');
-                html += commanderApp.renderMenuItems(commanderApp.json.courseadmin, 1);
+            // Set the first matching item as active.
+            if (firstHighlighted) {
+                firstHighlighted.classList.add('active');
             }
 
-            // Always try adding admin menu.
-            html += commanderApp.renderMenuItems(commanderApp.json.admin, 1);
-
-            html += '</ul></div>';
-            commanderApp.$mainModal.find('.local_commander-body').append(html);
-
-            commanderApp.$liSet = $('.local_commander-body ul');
-        },
-
-        /**
-         * Render items and add the correct attr.
-         *
-         * @param {object} child
-         * @param {int} depth
-         * @param {string} parentName
-         *
-         * @returns {string}
-         */
-        renderMenuItems: function(child, depth, parentName) {
-            "use strict";
-            var html = '';
-
-            // Check child.
-            if (!child.name) {
-                return html;
-            }
-
-            // Set parentName.
-            if (!parentName) {
-                parentName = '';
-            } else {
-                parentName += ' &rarr; ';
-            }
-
-            html += '<li>';
-
-            if (child.name) {
-                // Add the same to buffer.
-                //
-                html += '<a href="' + child.link + '">' + parentName + child.name + '</a>';
-            }
-
-            if (child.haschildren) {
-                $.each(child.children, function(i, el) {
-                    html += commanderApp.renderMenuItems(el, depth + 1, parentName + child.name);
-                });
-            }
-
-            html += '</li>';
-            return html;
-        },
-
-        /**
-         * Show the modal
-         */
-        show: function() {
-            "use strict";
-            commanderApp.$mainModal.show();
-            commanderApp.$mainModalBackLayer.show();
-
-            commanderApp.isShow = true;
-
-            // Focus on search field.
-            commanderApp.$mainModalCommand.focus();
-        },
-
-        /**
-         * Hide the modal
-         */
-        hide: function() {
-            commanderApp.$mainModal.hide();
-            commanderApp.$mainModalBackLayer.hide();
-
-            commanderApp.isShow = false;
-        },
-
-        /**
-         * Set 50% of viewport height
-         */
-        setHeight: function() {
-            var height = Math.round($(window).height() / 2);
-            commanderApp.$mainModal.height(height);
-            $('.local_commander-body div').height(height - 100);
-        },
-
-        /**
-         * Remove highlight
-         * @param {object} node
-         */
-        removeHighlight: function(node) {
-            $(node).html($(node).text());
-        }
-    };
-
-    return {
-
-        /**
-         * Called from Moodle.
-         * @param {array} params
-         */
-        init: function(params) {
-
-            /**
-             * Set the options.
-             */
-            setOptions(params);
-
-            /**
-             * Wait for jQuery
-             */
-            $(document).ready(function() {
-                Log.debug('ready() - local commander v4.4');
-                Log.debug(commanderAppOptions);
-                commanderApp.start();
+            // Hide items that don't match.
+            listItems.forEach((li) => {
+                if (!li.querySelector('.highlight')) {
+                    li.style.display = 'none';
+                }
             });
         }
-    };
-});
+    },
+
+    /**
+     * Build the command menu.
+     */
+    setMenu() {
+        Log.debug('Setting up menu');
+
+        let html = '';
+
+        if (commanderAppOptions.courseid > 0) {
+            Log.debug('Including course administration menu');
+            html += this.renderMenuItems(this.json.courseadmin, '');
+        }
+
+        html += this.renderMenuItems(this.json.admin, '');
+
+        const ulElement = this.mainModal.querySelector('.local_commander-body ul');
+        ulElement.innerHTML = html;
+
+        this.liSet = this.mainModal.querySelectorAll('.local_commander-body ul li');
+    },
+
+    /**
+     * Render menu items recursively.
+     * @param {object} item
+     * @param {string} parentName
+     * @returns {string}
+     */
+    renderMenuItems(item, parentName) {
+        if (!item.name) {
+            return '';
+        }
+
+        let html = '';
+
+        const fullName = parentName ? `${parentName} → ${item.name}` : item.name;
+        html += `<li><a href="${item.link}">${fullName}</a></li>`;
+
+        if (item.haschildren) {
+            item.children.forEach((child) => {
+                html += this.renderMenuItems(child, fullName);
+            });
+        }
+
+        return html;
+    },
+
+    /**
+     * Show the modal.
+     */
+    show() {
+        this.mainModal.style.display = 'block';
+        this.mainModalBackLayer.style.display = 'block';
+        this.isShow = true;
+
+        // Focus on the search field.
+        this.mainModalCommand.focus();
+    },
+
+    /**
+     * Hide the modal.
+     */
+    hide() {
+        this.mainModal.style.display = 'none';
+        this.mainModalBackLayer.style.display = 'none';
+        this.isShow = false;
+    },
+
+    /**
+     * Set the modal height to 50% of the viewport.
+     */
+    setHeight() {
+        const height = Math.round(window.innerHeight / 2);
+        this.mainModal.style.height = `${height}px`;
+        const bodyDiv = this.mainModal.querySelector('.local_commander-body div');
+        if (bodyDiv) {
+            bodyDiv.style.height = `${height - 100}px`;
+        }
+    },
+
+    /**
+     * Remove highlights from text nodes.
+     * @param {Node} node
+     */
+    removeHighlight(node) {
+        node.innerHTML = node.textContent;
+    },
+};
+
+/**
+ * Initialize the module.
+ * @param {object} params
+ */
+function init(params) {
+    // Set the options.
+    setOptions(params);
+
+    // Wait for the DOM to be fully loaded.
+    document.addEventListener('DOMContentLoaded', () => {
+        Log.debug('DOM fully loaded - initializing commanderApp');
+        Log.debug(commanderAppOptions);
+        commanderApp.start();
+    });
+}
+
+export default {
+    init,
+};

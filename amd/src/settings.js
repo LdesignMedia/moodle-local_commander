@@ -22,59 +22,58 @@
  * @copyright 2019 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-/* eslint-disable no-invalid-this */
-define(['jquery', 'core/str', 'core/notification', 'core/log'],
-    function($, str, Notification, Log) {
-    'use strict';
 
-    /**
-     * commanderSettings
-     */
-    const commanderSettings = {
+import str from 'core/str';
+import Notification from 'core/notification';
+import Log from 'core/log';
 
-        /**
-         * Init
-         */
-        init: function() {
-            let $el = $('#id_s_local_commander_keys');
+/**
+ * Initialize the commander settings.
+ */
+function init() {
+    const el = document.getElementById('id_s_local_commander_keys');
 
-            if ($el.length === 0) {
-                return;
-            }
+    if (!el) {
+        return;
+    }
 
-            str.get_string('js:keycode_help', 'local_commander').then(function(message) {
-                $el.before('<div class="alert alert-info" id="key-monitor"><b>' + message + '</b><div></div></div>');
-                return message;
-            }).fail(Notification.exception);
+    str.get_string('js:keycode_help', 'local_commander')
+        .then((message) => {
+            el.insertAdjacentHTML('beforebegin', `
+                <div class="alert alert-info" id="key-monitor">
+                    <b>${message}</b>
+                    <div></div>
+                </div>
+            `);
+        })
+        .catch(Notification.exception);
 
-            $(document).on('keydown', function(e) {
+    document.addEventListener('keydown', (e) => {
+        const tagName = e.target.tagName.toUpperCase();
 
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT'
-                    || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
-                    Log.debug('Hide when we are in an editable element');
-                    return;
-                }
-
-                let keyboardCode = e.keyCode || e.which;
-                $('#key-monitor div').text('key = ' + e.key + ' | code = ' + keyboardCode);
-            });
+        if (
+            tagName === 'INPUT' ||
+            tagName === 'SELECT' ||
+            tagName === 'TEXTAREA' ||
+            e.target.isContentEditable
+        ) {
+            Log.debug('Key event ignored in editable element');
+            return;
         }
-    };
 
-    return {
-
-        /**
-         * Called from Moodle.
-         */
-        init: function() {
-
-            /**
-             * Wait for jQuery
-             */
-            $(document).ready(function() {
-                Log.debug('ready() - setting local commander v4.4');
-                commanderSettings.init();
-            });
+        const keyboardCode = e.keyCode || e.which;
+        const monitorDiv = document.querySelector('#key-monitor div');
+        if (monitorDiv) {
+            monitorDiv.textContent = `key = ${e.key} | code = ${keyboardCode}`;
         }
-    };
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    Log.debug('DOM fully loaded - initializing commander settings');
+    init();
 });
+
+export default {
+    init,
+};
