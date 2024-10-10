@@ -54,4 +54,4 @@ Feature: Can use local commander search tool
     And I wait "2" seconds
     And I press the k key
     And I wait "2" seconds
-    And I should see "Speed up your Moodling" in the "body" "css_element"
+    And I should see "Local Commander" in the "body" "css_element"
