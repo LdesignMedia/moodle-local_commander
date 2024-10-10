@@ -39,6 +39,9 @@ Just press ` (above the TAB key) to bring up the **commander**. Use the UP and D
 - Navigate ⬆ / ⬇ keyboard
 - Open active item with keyboard ↵ 
 - ESC keyboard close modal
+- Implementing uFuzzy search
+- AMD javascript
+- OS darkmode support
 
 ## Installation
 1.  Copy this plugin to the `local\commander` folder on the server

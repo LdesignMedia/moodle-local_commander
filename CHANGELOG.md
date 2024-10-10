@@ -28,6 +28,14 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
+## Version (4.5) - 10.10.2024
+### Update
+- Remove jQuery from code base https://github.com/LdesignMedia/moodle-local_commander/issues/22
+- Add Fuzzy search https://github.com/LdesignMedia/moodle-local_commander/issues/16
+- Add OS darkmode support
+- Update styling
+- Tested for Moodle 4.5
+
 ## Version (3.11) - 2022-03-28
 ### Fix
 - `@thibault.herault` Thanks for solving issue with loading navigation.
