@@ -20,7 +20,7 @@ The plugin will list all navigation items in a list. This list is searchable. Yo
 ![Moodle42](https://img.shields.io/badge/moodle-4.2-brightgreen.svg?logo=moodle)
 ![Moodle43](https://img.shields.io/badge/moodle-4.3-brightgreen.svg?logo=moodle)
 ![Moodle44](https://img.shields.io/badge/moodle-4.4-brightgreen.svg?logo=moodle)
-
+![Moodle45](https://img.shields.io/badge/moodle-4.5-brightgreen.svg?logo=moodle)
 
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-purple.svg?logo=php)
 ![PHP8.0](https://img.shields.io/badge/PHP-8.0-purple.svg?logo=php)
