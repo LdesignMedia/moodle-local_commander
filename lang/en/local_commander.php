@@ -31,7 +31,7 @@ $string['commander:display'] = 'Local commander';
 $string['privacy:null_reason'] = 'No data collected by this plugin.';
 
 // JS.
-$string['js:header'] = 'Commander - Speed up your Moodling';
+$string['js:header'] = 'Local Commander';
 $string['js:command_placeholder'] = 'Search here for your command..';
 $string['js:error_parsing'] = 'Error parsing';
 $string['js:keycode_help'] = 'KeyboardEvent.code helper (press a keyboard key to see its code)';
