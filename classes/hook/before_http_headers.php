@@ -33,6 +33,7 @@ require_once($CFG->dirroot. '/local/commander/lib.php');
 
 use context_course;
 use context_system;
+use core_plugin_manager;
 
 /**
  * Class before_http_headers.
@@ -50,13 +51,20 @@ class before_http_headers {
      */
     public static function callback(): void {
 
-        global $COURSE, $PAGE;
+        global $COURSE, $PAGE , $CFG;
 
         if (isloggedin() === false) {
             return;
         }
 
         $context = empty($COURSE->id) ? context_system::instance() : context_course::instance($COURSE->id);
+
+        // Check if the plugin is installed.
+        $plugininfo = core_plugin_manager::instance()->get_plugin_info('local_commander');
+        if (empty($plugininfo->versiondb)) {
+            return;
+        }
+
         if (!has_capability('local/commander:display', $context)) {
             return;
         }
