@@ -40,13 +40,35 @@ const commanderAppOptions = {
 };
 
 /**
+ * Normalize keys into an array of integers.
+ * Accepts array, comma-separated string, or number.
+ * @param {Array|string|number} keys
+ * @returns {number[]}
+ */
+function normalizeKeys(keys) {
+    if (Array.isArray(keys)) {
+        return keys.map((k) => parseInt(k, 10)).filter((n) => Number.isFinite(n));
+    }
+    if (typeof keys === 'number') {
+        return [keys];
+    }
+    if (typeof keys === 'string') {
+        return keys
+            .split(',')
+            .map((k) => parseInt(k, 10))
+            .filter((n) => Number.isFinite(n));
+    }
+    return [];
+}
+
+/**
  * Set options based on provided parameters.
  * @param {object} options
  */
 function setOptions(options) {
     Object.keys(commanderAppOptions).forEach((key) => {
         if (options.hasOwnProperty(key)) {
-            commanderAppOptions[key] = options[key];
+            commanderAppOptions[key] = key === 'keys' ? normalizeKeys(options[key]) : options[key];
         }
     });
 }
@@ -170,7 +192,7 @@ const commanderApp = {
             }
 
             // Check if the pressed key is one of the trigger keys.
-            if (parseInt(commanderAppOptions.keys) === e.keyCode) {
+            if (commanderAppOptions.keys.includes(e.keyCode)) {
                 Log.debug('Commander keyboard key triggered');
 
                 // Validate that we're not in an editable area.

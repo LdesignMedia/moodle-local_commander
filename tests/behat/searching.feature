@@ -55,3 +55,21 @@ Feature: Can use local commander search tool
     And I press the k key
     And I wait "2" seconds
     And I should see "Local Commander" in the "body" "css_element"
+
+  @javascript
+  Scenario: Open local_commander with multiple keys
+    Given I log in as "admin"
+    And I navigate to "Plugins > Local plugins > Commander / Quick navigation" in site administration
+    When I set the field "s_local_commander_keys" to "75,74"
+    And I click on "Save changes" "button"
+    Then the field "s_local_commander_keys" matches value "75,74"
+    And I am on homepage
+    And I wait "2" seconds
+    And I press the k key
+    And I wait "1" seconds
+    And I should see "Local Commander" in the "body" "css_element"
+    And I press the escape key
+    And I wait "1" seconds
+    And I press the j key
+    And I wait "1" seconds
+    And I should see "Local Commander" in the "body" "css_element"

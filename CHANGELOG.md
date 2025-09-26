@@ -28,7 +28,19 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
-## Version (4.5) - 10.10.2024
+## Version (5.0.1) - 2025-09-27
+### Fixed
+- Fixed Behat test reliability by replacing back layer click with ESC key press
+- Increased z-index values to prevent element overlap issues
+- Fixed multiple trigger keys functionality to work correctly
+
+## Version (5.0.0) - 2025-09-26
+### Update
+- Updated for Moodle 5.0 compatibility
+- Fixed capability check before plugin installation (issue #13)
+- Version number aligned with Moodle 5.0
+
+## Version (4.5) - 2024-10-10
 ### Update
 - Remove jQuery from code base https://github.com/LdesignMedia/moodle-local_commander/issues/22
 - Add Fuzzy search https://github.com/LdesignMedia/moodle-local_commander/issues/16
