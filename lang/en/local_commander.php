@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   local_commander
- * @copyright 2018 MFreak.nl
+ * @copyright 2018 MFreak.nl | LdesignMedia.nl
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
@@ -42,3 +42,4 @@ $string['setting:keys_desc'] = 'The default keyboard shortcut is the <b>` Backqu
 
 // Errors.
 $string['error:noaccess'] = 'Error: missing capability "commander:display"';
+$string['error:invalidkeycode'] = 'Invalid keycode format. Use comma-separated numeric keycodes.';

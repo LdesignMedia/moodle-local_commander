@@ -29,7 +29,6 @@ namespace local_commander;
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/auth/manual/auth.php');
 
 /**
  * Class commander_test
@@ -60,7 +59,7 @@ class commander_test extends \advanced_testcase {
         $PAGE->set_course($SITE);
 
         $navigation = new navigation($PAGE, $SITE->id);
-        $menu = $navigation->get_menu_for_js();
+        $menu = $navigation->get_menu();
         $this->assertStringContainsString('Incoming mail configuration', $menu);
         $this->assertStringContainsString('XMLDB editor', $menu);
         $this->assertStringContainsString('Course administration', $menu);
@@ -81,7 +80,7 @@ class commander_test extends \advanced_testcase {
         $PAGE->set_course($course);
 
         $navigation = new navigation($PAGE, $course->id);
-        $menu = $navigation->get_menu_for_js();
+        $menu = $navigation->get_menu();
         $this->assertStringContainsString('copy.php?id=' . $course->id, $menu);
 
         $decoded = json_decode($menu);

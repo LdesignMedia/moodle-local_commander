@@ -63,7 +63,7 @@ class admin_setting_keycode extends admin_setting_configtext {
             }
 
             // Wrong format used.
-            $status = false;
+            $status = get_string('error:invalidkeycode', 'local_commander');
         }
 
         return $status;
@@ -77,8 +77,8 @@ class admin_setting_keycode extends admin_setting_configtext {
      * @return mixed|string
      * @throws coding_exception
      */
-    public function write_setting($data) {
-        if ($this->paramtype === PARAM_INT and $data === '') {
+    public function write_setting($data): string {
+        if ($this->paramtype === PARAM_INT && $data === '') {
             $data = 0;
         }
 
@@ -100,7 +100,7 @@ class admin_setting_keycode extends admin_setting_configtext {
      *
      * @return string
      */
-    private function clean(string $data) {
+    private function clean(string $data): string {
         return trim(str_replace(' ', '', strtolower($data)));
     }
 

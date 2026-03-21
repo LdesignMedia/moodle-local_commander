@@ -64,7 +64,7 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
             str.get_string('js:keycode_help', 'local_commander').then(function(message) {
                 $el.before('<div class="alert alert-info" id="key-monitor"><b>' + message + '</b><div></div></div>');
                 return message;
-            }).fail(Notification.exception);
+            }).catch(Notification.exception);
 
             $(document).on('keydown', function(e) {
 

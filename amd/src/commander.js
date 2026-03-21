@@ -356,7 +356,8 @@ define(['jquery', 'core/notification'], function($, notification) {
                 url: M.cfg.wwwroot + '/local/commander/ajax.php',
                 method: "GET",
                 data: {
-                    'courseid': commanderAppOptions.courseid
+                    'courseid': commanderAppOptions.courseid,
+                    'sesskey': M.cfg.sesskey
                 },
                 dataType: "json",
             }).done(function(response) {
@@ -366,7 +367,7 @@ define(['jquery', 'core/notification'], function($, notification) {
                 commanderApp.setMenu();
                 commanderApp.setHeight();
             }).fail(function() {
-                notification.alert('js:error_parsing', 'local_commander');
+                commanderApp.log('Error loading commander menu');
             });
         },
 

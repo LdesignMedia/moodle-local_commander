@@ -16,12 +16,11 @@
 
 /**
  * Output the possible menu options
- * TODO rewrite to webservice / externallib.php
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   local_commander
- * @copyright 2018 MFreak.nl
+ * @copyright 2018 MFreak.nl | LdesignMedia.nl
  * @author    Luuk Verhoeven
  **/
 
@@ -34,12 +33,9 @@ $courseid = optional_param('courseid', 0, PARAM_INT);
 
 // This should be accessed by only valid logged in user.
 require_login(null, false);
+require_sesskey();
 
-$context = empty($COURSE->id) ? context_system::instance() : context_course::instance($courseid);
-if (!has_capability('local/commander:display', $context)) {
-    return;
-}
-
+// Set up page context before capability check.
 $PAGE->set_context(context_system::instance());
 if ($courseid > 0) {
     $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
@@ -47,6 +43,11 @@ if ($courseid > 0) {
     $PAGE->set_context(context_course::instance($courseid));
 }
 
-// TODO Move to an external service.
-$navigation = new navigation($PAGE, $courseid);
-echo $navigation->get_menu_for_js();
+$context = $courseid > 0 ? context_course::instance($courseid) : context_system::instance();
+if (!has_capability('local/commander:display', $context)) {
+    echo json_encode(['error' => 'noaccess']);
+    exit;
+}
+
+$nav = new navigation($PAGE, $courseid);
+echo $nav->get_menu();

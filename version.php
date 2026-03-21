@@ -20,14 +20,14 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   local_commander
- * @copyright 2018 MFreak.nl
+ * @copyright 2018 MFreak.nl | LdesignMedia.nl
  * @author    Luuk Verhoeven
  **/
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->release = '4.4.0 (2024042600)';
+$plugin->release = '5.1.0';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->version = 2024080600;
-$plugin->requires = 2015111602;
+$plugin->version = 2026032100;
+$plugin->requires = 2022041900;
 $plugin->component = 'local_commander';
-$plugin->supported = [39, 404];
+$plugin->supported = [400, 501];
