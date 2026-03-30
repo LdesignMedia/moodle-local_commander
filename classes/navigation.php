@@ -142,11 +142,6 @@ class navigation {
             return [];
         }
 
-        // Ensure settings navigation is initialised.
-        if (property_exists($settingsnav, 'initialised') && !$settingsnav->initialised) {
-            $settingsnav->initialise();
-        }
-
         $courseadminnode = $settingsnav->get('courseadmin');
         if (!$courseadminnode) {
             return [];
