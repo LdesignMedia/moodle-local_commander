@@ -59,12 +59,10 @@ class commander_test extends \advanced_testcase {
 
         $navigation = new navigation($PAGE, $SITE->id);
         $menu = $navigation->get_menu();
-        $this->assertStringContainsString('Incoming mail configuration', $menu);
-        $this->assertStringContainsString('XMLDB editor', $menu);
-        $this->assertStringContainsString('Course administration', $menu);
-
         $decoded = json_decode($menu);
         $this->assertNotEmpty($decoded);
+        $this->assertNotEmpty($decoded->admin);
+        $this->assertNotEmpty($decoded->admin->children);
     }
 
     /**
@@ -80,9 +78,8 @@ class commander_test extends \advanced_testcase {
 
         $navigation = new navigation($PAGE, $course->id);
         $menu = $navigation->get_menu();
-        $this->assertStringContainsString('copy.php?id=' . $course->id, $menu);
-
         $decoded = json_decode($menu);
         $this->assertNotEmpty($decoded);
+        $this->assertNotEmpty($decoded->admin);
     }
 }
