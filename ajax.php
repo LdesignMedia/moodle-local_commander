@@ -15,12 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Output the possible menu options
+ * Output the possible menu options TODO rewrite to webservice / externallib.php
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   local_commander
- * @copyright 2018 MFreak.nl | LdesignMedia.nl
+ * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 
@@ -33,9 +33,12 @@ $courseid = optional_param('courseid', 0, PARAM_INT);
 
 // This should be accessed by only valid logged in user.
 require_login(null, false);
-require_sesskey();
 
-// Set up page context before capability check.
+$context = empty($COURSE->id) ? context_system::instance() : context_course::instance($courseid);
+if (!has_capability('local/commander:display', $context)) {
+    return;
+}
+
 $PAGE->set_context(context_system::instance());
 if ($courseid > 0) {
     $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
@@ -43,11 +46,6 @@ if ($courseid > 0) {
     $PAGE->set_context(context_course::instance($courseid));
 }
 
-$context = $courseid > 0 ? context_course::instance($courseid) : context_system::instance();
-if (!has_capability('local/commander:display', $context)) {
-    echo json_encode(['error' => 'noaccess']);
-    exit;
-}
-
-$nav = new navigation($PAGE, $courseid);
-echo $nav->get_menu();
+// TODO Move to an external service.
+$navigation = new navigation($PAGE, $courseid);
+echo $navigation->get_menu_for_js();

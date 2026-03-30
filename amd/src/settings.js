@@ -19,75 +19,61 @@
  * Tested in Moodle 3.8
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @package
  * @copyright 2019 MFreak.nl
  * @author    Luuk Verhoeven
  **/
-/* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
-/* eslint-disable no-invalid-this */
-define(['jquery', 'core/str', 'core/notification'], function($, str, Notification) {
-    'use strict';
 
-    /**
-     *
-     * @type {{}}
-     */
-    var commanderSettings = {
+import {getString} from 'core/str';
+import Notification from 'core/notification';
+import Log from 'core/log';
 
-        /**
-         * Internal logging
-         */
-        log: function() {
-            "use strict";
+/**
+ * Initialize the commander settings.
+ */
+function init() {
+    const el = document.getElementById('id_s_local_commander_keys');
 
-            // TODO Only show if debugging enabled in cfg.
-            console.log.apply(console, arguments);
-        },
+    if (!el) {
+        return;
+    }
 
-        /**
-         * Init
-         */
-        init: function() {
-            let $el = $('#id_s_local_commander_keys');
+    getString('js:keycode_help', 'local_commander')
+        .then((message) => {
+            el.insertAdjacentHTML('beforebegin', `
+                <div class="alert alert-info" id="key-monitor">
+                    <b>${message}</b>
+                    <div></div>
+                </div>
+            `);
+        })
+        .catch(Notification.exception);
 
-            if ($el.length === 0) {
-                return;
-            }
+    document.addEventListener('keydown', (e) => {
+        const tagName = e.target.tagName.toUpperCase();
 
-            str.get_string('js:keycode_help', 'local_commander').then(function(message) {
-                $el.before('<div class="alert alert-info" id="key-monitor"><b>' + message + '</b><div></div></div>');
-                return message;
-            }).catch(Notification.exception);
-
-            $(document).on('keydown', function(e) {
-
-                if (e.target.tagName == 'INPUT' || e.target.tagName == 'SELECT'
-                    || e.target.tagName == 'TEXTAREA' || e.target.isContentEditable) {
-                    commanderSettings.log('Hide when we are in an editable element');
-                    return;
-                }
-
-                let keyboardCode = e.keyCode || e.which;
-                $('#key-monitor div').text('key = ' + e.key + ' | code = ' + keyboardCode);
-            });
+        if (
+            tagName === 'INPUT' ||
+            tagName === 'SELECT' ||
+            tagName === 'TEXTAREA' ||
+            e.target.isContentEditable
+        ) {
+            Log.debug('Key event ignored in editable element');
+            return;
         }
-    };
 
-    return {
-
-        /**
-         * Called from Moodle.
-         */
-        init: function() {
-
-            /**
-             * Wait for jQuery
-             */
-            $(document).ready(function() {
-                commanderSettings.log('ready() - setting local commander v3.82');
-                commanderSettings.init();
-            });
+        const keyboardCode = e.keyCode || e.which;
+        const monitorDiv = document.querySelector('#key-monitor div');
+        if (monitorDiv) {
+            monitorDiv.textContent = `key = ${e.key} | code = ${keyboardCode}`;
         }
-    };
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    Log.debug('DOM fully loaded - initializing commander settings');
+    init();
 });
+
+export default {
+    init,
+};

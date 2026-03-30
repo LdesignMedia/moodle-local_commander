@@ -1,14 +1,14 @@
 name: ci
-
 on: [push, pull_request]
 
 jobs:
-  test:
+  ci:
     uses: catalyst/catalyst-moodle-workflows/.github/workflows/ci.yml@main
     secrets:
       moodle_org_token: ${{ secrets.MOODLE_ORG_TOKEN }}
     with:
       disable_behat: false
       disable_grunt: false
-      disable_release: false
       release_branches: main
+      min_php: '7.4'
+

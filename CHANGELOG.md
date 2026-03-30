@@ -1,35 +1,77 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
 
-## 5.1.0 (2026032100)
-- Updated supported Moodle version range to 4.0 - 5.1
-- Dropped support for Moodle 3.x
-- Updated copyright references to LdesignMedia
-- Updated README to uniform LdesignMedia format
-- Updated CI workflow with release automation
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## 4.4.0 (2024080600)
-- Added Moodle 4.4 hook support (before_http_headers)
-- Fixed course admin nodes loading issue
-- Updated version compatibility
+# Plugin version.php information
+```php
+// Plugin release number corresponds to the lasest tested Moodle version in which the plugin has been tested.
+$plugin->release = '3.5.7'; // [3.5.7]
 
-## 3.11.0 (2022032800)
-- Fixed issue with loading navigation (thanks @thibault.herault)
+// Plugin version number corresponds to the latest plugin version.
+$plugin->version = 2019010100; // 2019-01-01
+```
 
-## 3.11.0 (2021092700)
-- Moved to GitHub workflows
+# How do I make a good changelog?
+Guiding Principles
+* Changelogs are for humans, not machines.
+* There should be an entry for every single version.
+* The same types of changes should be grouped.
+* The latest version comes first.
+* The release date of each version is displayed.
 
-## 3.8.1 (2019111100)
-- Fixed issue with e.code not supported in all browsers
+Types of changes
+* **Added** for new features.
+* **Changed** for changes in existing functionality.
+* **Deprecated** for soon-to-be removed features.
+* **Removed** for now removed features.
+* **Fixed** for any bug fixes.
+* **Security** in case of vulnerabilities.
 
-## 3.8.0 (2019101300)
-- Added new KeyboardEvent support (e.keyCode deprecated)
+## Version (5.0.1) - 2025-09-27
+### Fixed
+- Fixed Behat test reliability by replacing back layer click with ESC key press
+- Increased z-index values to prevent element overlap issues
+- Fixed multiple trigger keys functionality to work correctly
+
+## Version (5.0.0) - 2025-09-26
+### Update
+- Updated for Moodle 5.0 compatibility
+- Fixed capability check before plugin installation (issue #13)
+- Version number aligned with Moodle 5.0
+
+## Version (4.5) - 2024-10-10
+### Update
+- Remove jQuery from code base https://github.com/LdesignMedia/moodle-local_commander/issues/22
+- Add Fuzzy search https://github.com/LdesignMedia/moodle-local_commander/issues/16
+- Add OS darkmode support
+- Update styling
+- Tested for Moodle 4.5
+
+## Version (3.11) - 2022-03-28
+### Fix
+- `@thibault.herault` Thanks for solving issue with loading navigation.
+
+## Version (3.11) - 2021-09-27
+### Update
+- Moved to GitHub workflows.
+
+## Version (3.8.1) - 2019-11-11
+### Fixed
+- Issue with e.code not supported in all browsers.
+
+## Version (3.8.0) - 2019-10-13
+### Added
+- Add new KeyboardEvent support (e.keyCode is deprecated)
 - Allows multiple trigger keys
-- Prevent display commander when in editable area
-- Moved changelog to separate file
+- Update version number, no issues founded in Moodle 3.8
+- Prevent display commander when we are in an editable area.
+- Changelog moved to a separate file
 
-## 1.2.7 (2019052000)
-- Release of the first official version
-- Travis CI tests added
-- Fixed system context issue within courses
+## Version (1.2.7) - 2019-05-20
+### Added
+- Release of the first official version.
+- Travis tests
+
+## Fixed 
+- Within a course system context isn't working like expected.

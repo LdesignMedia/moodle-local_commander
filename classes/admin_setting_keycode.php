@@ -39,6 +39,7 @@ use coding_exception;
  * @author    Luuk Verhoeven
  */
 class admin_setting_keycode extends admin_setting_configtext {
+
     /**
      * @var array
      */
@@ -56,12 +57,13 @@ class admin_setting_keycode extends admin_setting_configtext {
 
         $keycodes = explode(',', $data);
         foreach ($keycodes as $keycode) {
+
             if (is_numeric($keycode)) {
                 continue;
             }
 
             // Wrong format used.
-            $status = get_string('error:invalidkeycode', 'local_commander');
+            $status = false;
         }
 
         return $status;
@@ -75,7 +77,7 @@ class admin_setting_keycode extends admin_setting_configtext {
      * @return mixed|string
      * @throws coding_exception
      */
-    public function write_setting($data): string {
+    public function write_setting($data) {
         if ($this->paramtype === PARAM_INT && $data === '') {
             $data = 0;
         }
@@ -98,7 +100,8 @@ class admin_setting_keycode extends admin_setting_configtext {
      *
      * @return string
      */
-    private function clean(string $data): string {
+    private function clean(string $data) {
         return trim(str_replace(' ', '', strtolower($data)));
     }
+
 }
