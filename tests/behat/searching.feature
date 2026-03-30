@@ -29,7 +29,7 @@ Feature: Can use local commander search tool
   Background:
     Given the following "courses" exist:
       | fullname | shortname | format | enablecompletion |
-      | Course1  | C1        | topics | 1                |
+      | Course 1 | C1        | topics | 1                |
     And the following "users" exist:
       | username |
       | teacher1 |
@@ -56,7 +56,7 @@ Feature: Can use local commander search tool
 
     When I log in as "teacher1"
     And I am on homepage
-    And I follow "Course1"
+    And I follow "Course 1"
     And I press the enter key
     And I wait "2" seconds
 
