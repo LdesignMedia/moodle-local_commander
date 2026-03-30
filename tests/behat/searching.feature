@@ -46,9 +46,8 @@ Feature: Can use local commander search tool
     And I set the field "s_local_commander_keys" to "13"
     And I press "Save changes"
     Then the field "s_local_commander_keys" matches value "13"
-
-    Then I navigate to "Plugins" in site administration
-
+    And I am on homepage
+    And I wait "1" seconds
     And I press the enter key
     And I set the field "local_commander_command" to "commander"
     And I wait "2" seconds
