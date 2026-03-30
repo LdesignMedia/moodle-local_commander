@@ -21,13 +21,13 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package local_commander
+ * @package
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 /* eslint no-console: ["error", { allow: ["warn", "error" , "log"] }] */
 /* eslint-disable no-invalid-this */
-define(['jquery', 'core/notification'], function($, notification) {
+define(['jquery'], function($) {
     'use strict';
 
     // Keyboard codes.
@@ -116,18 +116,12 @@ define(['jquery', 'core/notification'], function($, notification) {
 
         /**
          * Internal logging
-         * @param {*} val
          */
         log: function() {
             "use strict";
 
-            // Check if we can  the log.
-            try {
-                // TODO Only  if debugging enabled in cfg.
-                console.log.apply(console, arguments);
-            } catch (exc) {
-                throw exc;
-            }
+            // TODO Only log if debugging enabled in cfg.
+            console.log.apply(console, arguments);
         },
 
         /**

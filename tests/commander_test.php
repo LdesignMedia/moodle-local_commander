@@ -40,11 +40,10 @@ global $CFG;
  * @author    Luuk Verhoeven
  **/
 class commander_test extends \advanced_testcase {
-
     /**
      * Setup test data.
      */
-    protected function setUp() : void {
+    protected function setUp(): void {
         $this->resetAfterTest(true);
         $this->setAdminUser();
     }
@@ -86,5 +85,4 @@ class commander_test extends \advanced_testcase {
         $decoded = json_decode($menu);
         $this->assertNotEmpty($decoded);
     }
-
 }

@@ -42,7 +42,6 @@ use navigation_node;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class navigation {
-
     /** @var \moodle_page */
     private \moodle_page $page;
 

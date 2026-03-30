@@ -41,7 +41,6 @@ use context_system;
  * @author    Luuk Verhoeven
  **/
 class before_http_headers {
-
     /**
      * Callback to allow modifying headers.
      */
@@ -74,5 +73,4 @@ class before_http_headers {
             'js:command_placeholder',
         ], 'local_commander');
     }
-
 }

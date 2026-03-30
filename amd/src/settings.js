@@ -20,7 +20,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package local_commander
+ * @package
  * @copyright 2019 MFreak.nl
  * @author    Luuk Verhoeven
  **/
@@ -37,18 +37,12 @@ define(['jquery', 'core/str', 'core/notification'], function($, str, Notificatio
 
         /**
          * Internal logging
-         * @param {*} val
          */
         log: function() {
             "use strict";
 
-            // Check if we can show the log.
-            try {
-                // TODO Only show if debugging enabled in cfg.
-                console.log.apply(console, arguments);
-            } catch (exc) {
-                throw exc;
-            }
+            // TODO Only show if debugging enabled in cfg.
+            console.log.apply(console, arguments);
         },
 
         /**

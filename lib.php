@@ -53,5 +53,4 @@ function local_commander_before_http_headers(): void {
 
     // Otherwise we call the callback from here.
     \local_commander\hook\before_http_headers::callback();
-
 }
