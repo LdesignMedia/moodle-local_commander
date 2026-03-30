@@ -77,6 +77,8 @@ class navigation {
      * @return array
      */
     private function get_admin_nodes(): array {
+        global $CFG;
+        require_once($CFG->libdir . '/adminlib.php');
         $root = \admin_get_root();
         if (empty($root)) {
             return [];
