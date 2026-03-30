@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Provider class
  *
@@ -37,7 +38,6 @@ use core_privacy\local\metadata\null_provider;
  * @author    Luuk Verhoeven
  **/
 class provider implements null_provider {
-
     /**
      * Get the language string identifier with the component's language file to explain why this plugin stores no data.
      *
@@ -46,5 +46,4 @@ class provider implements null_provider {
     public static function get_reason(): string {
         return 'privacy:null_reason';
     }
-
 }

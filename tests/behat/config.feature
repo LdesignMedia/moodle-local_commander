@@ -25,3 +25,10 @@ Feature: Manager can use local commander search tool
   In order to use the local commander in Moodle
   As an admin
   I have to be able save settings
+
+  @javascript
+  Scenario: Open local_commander
+    Given I log in as "admin"
+    And I navigate to "Plugins > Local plugins > Commander / Quick navigation" in site administration
+    And I press "Save changes"
+    Then the field "s_local_commander_keys" matches value "192"
