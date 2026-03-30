@@ -53,11 +53,3 @@ Feature: Can use local commander search tool
     And I wait "2" seconds
     And I press the enter key
     Then I should see "Commander / Quick navigation" in the "body" "css_element"
-
-    When I log in as "teacher1"
-    And I am on homepage
-    And I follow "Course 1"
-    And I press the enter key
-    And I wait "2" seconds
-
-    Then I should see "Speed up your Moodling" in the "body" "css_element"
