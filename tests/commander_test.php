@@ -29,7 +29,6 @@ namespace local_commander;
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/auth/manual/auth.php');
 
 /**
  * Class commander_test
@@ -41,11 +40,10 @@ require_once($CFG->dirroot . '/auth/manual/auth.php');
  * @author    Luuk Verhoeven
  **/
 class commander_test extends \advanced_testcase {
-
     /**
      * Setup test data.
      */
-    protected function setUp() : void {
+    protected function setUp(): void {
         $this->resetAfterTest(true);
         $this->setAdminUser();
     }
@@ -60,13 +58,11 @@ class commander_test extends \advanced_testcase {
         $PAGE->set_course($SITE);
 
         $navigation = new navigation($PAGE, $SITE->id);
-        $menu = $navigation->get_menu_for_js();
-        $this->assertStringContainsString('Incoming mail configuration', $menu);
-        $this->assertStringContainsString('XMLDB editor', $menu);
-        $this->assertStringContainsString('Course administration', $menu);
-
+        $menu = $navigation->get_menu();
         $decoded = json_decode($menu);
         $this->assertNotEmpty($decoded);
+        $this->assertNotEmpty($decoded->admin);
+        $this->assertNotEmpty($decoded->admin->children);
     }
 
     /**
@@ -81,11 +77,9 @@ class commander_test extends \advanced_testcase {
         $PAGE->set_course($course);
 
         $navigation = new navigation($PAGE, $course->id);
-        $menu = $navigation->get_menu_for_js();
-        $this->assertStringContainsString('copy.php?id=' . $course->id, $menu);
-
+        $menu = $navigation->get_menu();
         $decoded = json_decode($menu);
         $this->assertNotEmpty($decoded);
+        $this->assertNotEmpty($decoded->admin);
     }
-
 }

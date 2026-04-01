@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   local_commander
- * @copyright 2018 MFreak.nl
+ * @copyright 2018 MFreak.nl | LdesignMedia.nl
  * @author    Luuk Verhoeven
  **/
 
@@ -28,17 +28,21 @@ use local_commander\admin_setting_keycode;
 
 defined('MOODLE_INTERNAL') || die;
 if ($hassiteconfig) {
-
     // Load keycode helper.
     $PAGE->requires->js_call_amd('local_commander/settings', 'init');
 
-    $settings = new admin_settingpage('local_commander',
-        new lang_string('pluginname', 'local_commander'));
+    $settings = new admin_settingpage(
+        'local_commander',
+        new lang_string('pluginname', 'local_commander')
+    );
 
-    $settings->add(new admin_setting_keycode('local_commander/keys',
+    $settings->add(new admin_setting_keycode(
+        'local_commander/keys',
         new lang_string('setting:keys', 'local_commander'),
         new lang_string('setting:keys_desc', 'local_commander'),
-        '192', PARAM_TEXT));
+        '192',
+        PARAM_TEXT
+    ));
 
     $ADMIN->add('localplugins', $settings);
 }

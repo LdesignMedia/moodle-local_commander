@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   local_commander
- * @copyright 2018 MFreak.nl
+ * @copyright 2018 MFreak.nl | LdesignMedia.nl
  * @author    Luuk Verhoeven
  **/
 
@@ -34,8 +34,11 @@
  */
 function local_commander_get_trigger_keys(): array {
     $keys = get_config('local_commander', 'keys');
+    if (empty($keys)) {
+        return ['192'];
+    }
 
-    return explode(',', $keys);
+    return explode(',', (string)$keys);
 }
 
 /**
@@ -50,5 +53,4 @@ function local_commander_before_http_headers(): void {
 
     // Otherwise we call the callback from here.
     \local_commander\hook\before_http_headers::callback();
-
 }

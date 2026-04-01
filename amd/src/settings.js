@@ -23,7 +23,7 @@
  * @author    Luuk Verhoeven
  **/
 
-import {getString} from 'core/str';
+import {get_string} from 'core/str';
 import Notification from 'core/notification';
 import Log from 'core/log';
 
@@ -37,7 +37,7 @@ function init() {
         return;
     }
 
-    getString('js:keycode_help', 'local_commander')
+    get_string('js:keycode_help', 'local_commander')
         .then((message) => {
             el.insertAdjacentHTML('beforebegin', `
                 <div class="alert alert-info" id="key-monitor">
@@ -68,11 +68,6 @@ function init() {
         }
     });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    Log.debug('DOM fully loaded - initializing commander settings');
-    init();
-});
 
 export default {
     init,

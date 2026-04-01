@@ -29,7 +29,7 @@ namespace local_commander\hook;
 defined('MOODLE_INTERNAL') || die;
 
 global $CFG;
-require_once($CFG->dirroot. '/local/commander/lib.php');
+require_once($CFG->dirroot . '/local/commander/lib.php');
 
 use context_course;
 use context_system;
@@ -45,13 +45,12 @@ use core_plugin_manager;
  * @author    Luuk Verhoeven
  **/
 class before_http_headers {
-
     /**
      * Callback to allow modifying headers.
      */
     public static function callback(): void {
 
-        global $COURSE, $PAGE , $CFG;
+        global $COURSE, $PAGE, $CFG;
 
         if (isloggedin() === false) {
             return;
@@ -84,5 +83,4 @@ class before_http_headers {
             'js:command_placeholder',
         ], 'local_commander');
     }
-
 }

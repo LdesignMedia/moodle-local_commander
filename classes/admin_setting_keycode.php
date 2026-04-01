@@ -39,7 +39,6 @@ use coding_exception;
  * @author    Luuk Verhoeven
  */
 class admin_setting_keycode extends admin_setting_configtext {
-
     /**
      * @var array
      */
@@ -57,7 +56,6 @@ class admin_setting_keycode extends admin_setting_configtext {
 
         $keycodes = explode(',', $data);
         foreach ($keycodes as $keycode) {
-
             if (is_numeric($keycode)) {
                 continue;
             }
@@ -103,5 +101,4 @@ class admin_setting_keycode extends admin_setting_configtext {
     private function clean(string $data) {
         return trim(str_replace(' ', '', strtolower($data)));
     }
-
 }
