@@ -48,4 +48,4 @@ if ($courseid > 0) {
 
 // TODO Move to an external service.
 $navigation = new navigation($PAGE, $courseid);
-echo $navigation->get_menu_for_js();
+echo $navigation->get_menu();
