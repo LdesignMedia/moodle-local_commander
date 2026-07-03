@@ -28,6 +28,12 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
+## Version (5.1.2) - 2026-07-03
+### Changed
+- Use `->out(false)` for `moodle_url`/`action_link` course-admin navigation nodes, matching the rest of the file and avoiding `&amp;`-escaped URLs in the JSON.
+- Add explicit `riskbitmask => 0` to the `local/commander:display` capability so its read-only, low-risk intent is visible in the roles UI.
+- Remove dead code and stale comments flagged by the security audit: unused `$allowed` property, production TODO comments, duplicate license block (commander.js), and stale "Tested in Moodle 3.8" docblock (settings.js). Add missing `@return void` on `before_http_headers::callback()`.
+
 ## Version (5.1.1) - 2026-07-03
 ### Security
 - Escape navigation names and links (`escapeHtml`) before they are written to `innerHTML` in the commander overlay, and HTML-encode search highlight segments via an escaping `uFuzzy.highlight()` mark callback. Defence in depth against XSS if a raw string ever reaches the client sinks.
