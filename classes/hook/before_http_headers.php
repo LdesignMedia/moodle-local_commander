@@ -47,6 +47,8 @@ use core_plugin_manager;
 class before_http_headers {
     /**
      * Callback to allow modifying headers.
+     *
+     * @return void
      */
     public static function callback(): void {
 
@@ -76,7 +78,6 @@ class before_http_headers {
 
         $PAGE->requires->js_call_amd('local_commander/commander', 'init', [$arguments]);
 
-        // TODO Using mustache template instead.
         $PAGE->requires->strings_for_js([
             'js:header',
             'js:error_parsing',

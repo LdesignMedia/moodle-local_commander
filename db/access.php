@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
     'local/commander:display' => [
+        'riskbitmask' => 0,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [

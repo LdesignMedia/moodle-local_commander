@@ -208,9 +208,9 @@ class navigation {
         if (is_string($child->action)) {
             $attributes['link'] = $child->action;
         } else if ($child->action instanceof moodle_url) {
-            $attributes['link'] = $child->action->out();
+            $attributes['link'] = $child->action->out(false);
         } else if ($child->action instanceof action_link) {
-            $attributes['link'] = $child->action->url->out();
+            $attributes['link'] = $child->action->url->out(false);
         }
 
         $attributes['hidden'] = ($child->hidden);
