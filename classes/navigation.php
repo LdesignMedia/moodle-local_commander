@@ -104,7 +104,9 @@ class navigation {
         if ($node instanceof \admin_settingpage) {
             $attributes['link'] = (new moodle_url('/admin/settings.php', ['section' => $node->name]))->out(false);
         } else if ($node instanceof \admin_externalpage) {
-            $attributes['link'] = $node->url ?? '#';
+            // $node->url may be a plain string or a moodle_url/core\url object; normalise to a string URL.
+            $url = $node->url ?? '#';
+            $attributes['link'] = ($url instanceof moodle_url) ? $url->out(false) : (string)$url;
         }
 
         if ($node instanceof \admin_category && !empty($node->children)) {
