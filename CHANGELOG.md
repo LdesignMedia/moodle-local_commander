@@ -32,6 +32,7 @@ Types of changes
 ### Security
 - Escape navigation names and links (`escapeHtml`) before they are written to `innerHTML` in the commander overlay, and HTML-encode search highlight segments via an escaping `uFuzzy.highlight()` mark callback. Defence in depth against XSS if a raw string ever reaches the client sinks.
 ### Fixed
+- Fix admin navigation links that pointed to `[object Object]`: `admin_externalpage->url` can be a `moodle_url`/`core\url` object, which was serialised into JSON as an empty object and became `[object Object]` client-side. Normalise it to a string URL via `->out(false)`. Affected 60+ admin items (Registration, Data requests, Add a new course, Manage badges, and any third-party tool such as `tool_supporter`).
 - Correct `ajax.php` context resolution: test the `courseid` request parameter instead of the global `$COURSE->id`, which always resolved to the site course and threw `dml_missing_record_exception` (HTTP 500) for the default `courseid=0`.
 
 ## Version (5.0.1) - 2025-09-27
