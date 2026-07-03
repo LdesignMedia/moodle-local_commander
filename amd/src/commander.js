@@ -48,6 +48,58 @@ const KEYS = {
 };
 
 /**
+ * Tag names that always represent a text-entry context where the trigger key
+ * must reach the field instead of opening Commander.
+ */
+const EDITABLE_TAGS = ['INPUT', 'SELECT', 'TEXTAREA'];
+
+/**
+ * Test whether a single element represents an editable / text-entry context.
+ *
+ * IFRAME is included because rich text editors (TinyMCE, Atto) host their
+ * editable body inside an <iframe>. When focus is in that iframe the keydown
+ * event bubbles to the top window with the iframe element as its target, so a
+ * plain tagName/contentEditable check on the target alone would miss it.
+ *
+ * @param {Element|null} el
+ * @returns {boolean}
+ */
+function isEditableElement(el) {
+    if (!el || !el.tagName) {
+        return false;
+    }
+    if (EDITABLE_TAGS.includes(el.tagName.toUpperCase())) {
+        return true;
+    }
+    if (el.isContentEditable) {
+        return true;
+    }
+    // TinyMCE dialogs (e.g. View -> Source code) and edit areas. The source
+    // textarea and the editor body live inside these containers; typing there
+    // must never trigger Commander.
+    if (typeof el.closest === 'function' && el.closest('.tox-dialog, .tox-edit-area, .tox-tinymce')) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Decide whether the current keydown is happening inside an editable context,
+ * in which case Commander must not steal the key.
+ *
+ * Both the event target and document.activeElement are checked: when focus is
+ * inside an editor iframe the event target is the <iframe> element, while
+ * document.activeElement is the focused iframe host too, so covering both is
+ * the most reliable signal available from the top document.
+ *
+ * @param {KeyboardEvent} e
+ * @returns {boolean}
+ */
+function isEditableContext(e) {
+    return isEditableElement(e.target) || isEditableElement(document.activeElement);
+}
+
+/**
  * Options we can set from AMD.
  */
 const commanderAppOptions = {
@@ -211,10 +263,11 @@ const commanderApp = {
             if (commanderAppOptions.keys.includes(e.keyCode)) {
                 Log.debug('Commander keyboard key triggered');
 
-                // Validate that we're not in an editable area.
-                const target = e.target;
-                const tagName = target.tagName.toUpperCase();
-                if (['INPUT', 'SELECT', 'TEXTAREA'].includes(tagName) || target.isContentEditable) {
+                // Validate that we're not in an editable area. This also covers
+                // rich text editors (TinyMCE/Atto) whose editable body and
+                // dialogs (e.g. View -> Source code) live inside an iframe or a
+                // .tox-* container, where a plain target check would miss.
+                if (isEditableContext(e)) {
                     Log.debug('Ignoring keypress in editable element');
                     return;
                 }

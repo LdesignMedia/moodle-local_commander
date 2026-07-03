@@ -28,6 +28,10 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
+## Version (5.1.3) - 2026-07-03
+### Fixed
+- Do not open Commander when the trigger key is typed inside a rich text editor. The editable-context check now also covers TinyMCE/Atto editor iframes (`e.target` is the `<iframe>`), `document.activeElement`, and `.tox-*` dialog containers, so typing the mapped character in the TinyMCE **View → Source code** overlay types the character instead of opening Commander (#19).
+
 ## Version (5.1.2) - 2026-07-03
 ### Changed
 - Use `->out(false)` for `moodle_url`/`action_link` course-admin navigation nodes, matching the rest of the file and avoiding `&amp;`-escaped URLs in the JSON.
