@@ -50,7 +50,7 @@ class before_http_headers {
      */
     public static function callback(): void {
 
-        global $COURSE, $PAGE, $CFG;
+        global $COURSE, $PAGE;
 
         if (isloggedin() === false) {
             return;

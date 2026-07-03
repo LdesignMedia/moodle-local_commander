@@ -28,6 +28,12 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
+## Version (5.1.1) - 2026-07-03
+### Security
+- Escape navigation names and links (`escapeHtml`) before they are written to `innerHTML` in the commander overlay, and HTML-encode search highlight segments via an escaping `uFuzzy.highlight()` mark callback. Defence in depth against XSS if a raw string ever reaches the client sinks.
+### Fixed
+- Correct `ajax.php` context resolution: test the `courseid` request parameter instead of the global `$COURSE->id`, which always resolved to the site course and threw `dml_missing_record_exception` (HTTP 500) for the default `courseid=0`.
+
 ## Version (5.0.1) - 2025-09-27
 ### Fixed
 - Fixed Behat test reliability by replacing back layer click with ESC key press
