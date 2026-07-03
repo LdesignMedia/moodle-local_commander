@@ -50,16 +50,20 @@ const KEYS = {
 /**
  * Tag names that always represent a text-entry context where the trigger key
  * must reach the field instead of opening Commander.
- */
-const EDITABLE_TAGS = ['INPUT', 'SELECT', 'TEXTAREA'];
-
-/**
- * Test whether a single element represents an editable / text-entry context.
  *
  * IFRAME is included because rich text editors (TinyMCE, Atto) host their
  * editable body inside an <iframe>. When focus is in that iframe the keydown
- * event bubbles to the top window with the iframe element as its target, so a
- * plain tagName/contentEditable check on the target alone would miss it.
+ * bubbles to the top window with the <iframe> element as its target, so it must
+ * be treated as editable regardless of its class (the class differs per editor:
+ * TinyMCE uses `.tox-edit-area__iframe`, Atto a plain iframe, etc.).
+ */
+const EDITABLE_TAGS = ['INPUT', 'SELECT', 'TEXTAREA', 'IFRAME'];
+
+/**
+ * Test whether a single element represents an editable / text-entry context:
+ * an editable tag (see EDITABLE_TAGS, which includes IFRAME for rich text
+ * editors), a contentEditable element, or an element inside a TinyMCE dialog /
+ * edit area.
  *
  * @param {Element|null} el
  * @returns {boolean}
