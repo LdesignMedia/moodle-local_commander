@@ -34,7 +34,7 @@ $courseid = optional_param('courseid', 0, PARAM_INT);
 // This should be accessed by only valid logged in user.
 require_login(null, false);
 
-$context = empty($COURSE->id) ? context_system::instance() : context_course::instance($courseid);
+$context = ($courseid > 0) ? context_course::instance($courseid) : context_system::instance();
 if (!has_capability('local/commander:display', $context)) {
     return;
 }

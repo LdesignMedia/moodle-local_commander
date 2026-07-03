@@ -22,6 +22,26 @@ import Log from 'core/log';
 import { uFuzzy } from 'local_commander/ufuzzy';
 
 /**
+ * HTML-escape a string so it is safe to embed in an HTML context.
+ *
+ * Defence in depth: navigation names and links are already sanitised server-side
+ * (Moodle runs format_string() on visible names), but the client must not depend
+ * on that. Escaping here keeps the innerHTML sinks safe even if a raw string ever
+ * reaches them (e.g. a third-party navigation node).
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/**
  * Keyboard key codes mapped to their respective event.key values.
  */
 const KEYS = {
@@ -365,9 +385,15 @@ const commanderApp = {
                 }
 
                 try {
+                    // Escape each segment before it is wrapped, so the highlighted
+                    // markup written to innerHTML cannot contain executable HTML.
+                    const mark = (part, matched) => matched
+                        ? `<mark>${escapeHtml(part)}</mark>`
+                        : escapeHtml(part);
                     li.querySelector('a').innerHTML = uFuzzy.highlight(
                         li.innerText,
                         info.ranges[index],
+                        mark,
                     );
                 } catch (e) {
                     Log.error('Error highlighting text:', e);
@@ -425,7 +451,7 @@ const commanderApp = {
         let html = '';
 
         const fullName = parentName ? `${parentName} → ${item.name}` : item.name;
-        html += `<li><a href="${item.link}">${fullName}</a></li>`;
+        html += `<li><a href="${escapeHtml(item.link)}">${escapeHtml(fullName)}</a></li>`;
 
         if (item.haschildren && item.children) {
             item.children.forEach((child) => {
