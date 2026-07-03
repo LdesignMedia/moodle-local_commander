@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Output the possible menu options TODO rewrite to webservice / externallib.php
+ * Output the possible menu options.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -46,6 +46,5 @@ if ($courseid > 0) {
     $PAGE->set_context(context_course::instance($courseid));
 }
 
-// TODO Move to an external service.
 $navigation = new navigation($PAGE, $courseid);
 echo $navigation->get_menu();

@@ -14,10 +14,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Helper for keycodes
+ * Settings helper for local_commander keycode configuration.
  *
- * Tested in Moodle 3.8
- *
+ * @module    local_commander/settings
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @copyright 2019 MFreak.nl
  * @author    Luuk Verhoeven

@@ -40,11 +40,6 @@ use coding_exception;
  */
 class admin_setting_keycode extends admin_setting_configtext {
     /**
-     * @var array
-     */
-    protected array $allowed = [];
-
-    /**
      * Validate data before storage
      *
      * @param string $data
