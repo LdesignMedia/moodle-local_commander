@@ -1,0 +1,28 @@
+# camp listing manifest — descriptive content for your plugin's page.
+# Edit freely and commit; camp ingests this file at each tagged release.
+# Schema: https://camp-registry.org/schema/listing.schema.json
+name: Commander
+summary: Quick navigation for Moodle — a searchable command dialog (PhpStorm-style) listing all navigation items, opened with a keyboard shortcut.
+description: |
+  Commander is a command dialog inspired by PhpStorm **Action** and `oh-my-zsh`.
+  It makes navigation in Moodle faster: press the trigger key (backtick by
+  default, configurable) and a searchable list of all navigation items appears.
+  Move with the arrow keys, open with Enter, close with ESC.
+
+  ## Features
+
+  - Quick navigation by pressing the backtick key or custom configured key(s)
+  - Support for multiple trigger keys (comma-separated keycodes)
+  - Fast fuzzy search powered by uFuzzy
+  - Full keyboard control: arrow keys to move, Enter to open, ESC to close
+  - Available for manager, coursecreator, editingteacher and teacher roles
+    (capability `local/commander:display`)
+  - Modern ES6+ JavaScript with AMD modules
+  - OS dark mode support
+labels:
+  - fully-free
+category: Navigation
+links:
+  docs: https://github.com/LdesignMedia/moodle-local_commander#readme
+  issues: https://github.com/LdesignMedia/moodle-local_commander/issues
+  changelog: https://github.com/LdesignMedia/moodle-local_commander/blob/main/CHANGELOG.md
