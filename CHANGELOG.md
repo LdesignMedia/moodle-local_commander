@@ -28,6 +28,13 @@ Types of changes
 * **Fixed** for any bug fixes.
 * **Security** in case of vulnerabilities.
 
+## Version (5.3.0) - 2026-10-16
+### Added
+- Moodle 5.3 support: `$plugin->supported` raised from `[401, 501]` to `[401, 503]`, which also covers Moodle 5.2. Tested in the browser on Moodle 5.3 (Build: 20261005, PHP 8.3): opening Commander, fuzzy search, keyboard navigation, admin and course administration items, the trigger key setting (multiple keys, validation), role access (editing teacher yes, student no) and the rich text editor guard (#19), including the new TinyMCE source code editor. The navigation output was also checked from the CLI on Moodle 5.3 with PHP 8.4 and on Moodle 5.2 (Build: 20260420).
+- README: Moodle 5.1, 5.2 and 5.3 and PHP 8.4 badges.
+### Fixed
+- `ajax.php` now sets `$PAGE->url`. Building the course administration menu initialises the settings navigation, where `tool_usertours` reads `$PAGE->url`, so every Commander open inside a course logged a "This page did not call $PAGE->set_url(...)" developer debugging notice.
+
 ## Version (5.1.3) - 2026-07-03
 ### Fixed
 - Do not open Commander when the trigger key is typed inside a rich text editor. The editable-context check now also covers TinyMCE/Atto editor iframes (`e.target` is the `<iframe>`), `document.activeElement`, and `.tox-*` dialog containers, so typing the mapped character in the TinyMCE **View → Source code** overlay types the character instead of opening Commander (#19).
