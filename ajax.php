@@ -39,6 +39,7 @@ if (!has_capability('local/commander:display', $context)) {
     return;
 }
 
+$PAGE->set_url('/local/commander/ajax.php', ['courseid' => $courseid]);
 $PAGE->set_context(context_system::instance());
 if ($courseid > 0) {
     $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
